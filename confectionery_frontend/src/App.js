@@ -8,15 +8,18 @@ import Contact from './pages/Contact.jsx';
 import Cart from './pages/Cart.jsx';
 import LoginSignUp from './pages/LoginSignUp.jsx'
 import User from './pages/User';
+import React, { useState } from 'react';
 
 
 function App() {
+  const [menu, setMenu] = useState("home");
+
   return (
     <div>
       <BrowserRouter>
-      <NavigationBar/>
+      <NavigationBar menu={menu} setMenu={setMenu}/>
       <Routes>
-        <Route path='/' element={<Home/>}/>
+        <Route path='/' element={<Home setMenu={setMenu} />}/>
         <Route path='/aboutus' element={<AboutUs/>}/>
         <Route path='/products' element={<Product/>}/>
         <Route path='/contacts' element={<Contact/>}/>

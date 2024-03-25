@@ -7,12 +7,10 @@ import { Link } from 'react-router-dom'
 import { FaRegUser } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 
-const NavigationBar = () => {
-
-    const [menu, setMenu] =  useState("home");
+const NavigationBar = ({ menu, setMenu }) => {
 
   return (
-    <div className='navigationBar'>
+    <div className='navigation-bar'>
 
         <div className="nav-logo">
             <img src={logo} alt="website logo" width={100} height={100}/>

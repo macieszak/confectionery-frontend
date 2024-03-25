@@ -1,11 +1,10 @@
 import React from 'react'
 import MainInfo from '../components/MainInfo/MainInfo'
 
-const Home = () => {
+const Home = ({setMenu}) => {
   return (
     <div>
-      <MainInfo/>
-      
+      <MainInfo setMenu={setMenu}/>
     </div>
   )
 }
