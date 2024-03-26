@@ -9,6 +9,7 @@ import Cart from './pages/Cart.jsx';
 import LoginSignUp from './pages/LoginSignUp.jsx'
 import User from './pages/User';
 import React, { useState } from 'react';
+import Footer from './components/Footer/Footer';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
          <Route path='/user' element={<User/>}/>
          <Route path='/login' element={<LoginSignUp/>}/>
       </Routes>
+      <Footer/>
       </BrowserRouter>
     </div>
   );
