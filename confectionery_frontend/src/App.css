@@ -1,3 +1,20 @@
+body {
+  background-color: #EEDDCC;
+}
+
+@media (max-width: 600px) {
+  .component {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }

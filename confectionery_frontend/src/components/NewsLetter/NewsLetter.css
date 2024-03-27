@@ -7,13 +7,15 @@
     justify-content: center;
     margin: auto;
     background-color: #EEDDCC;
-    padding-top: 60px;
-    gap: 30px;
+    padding-top: 130px;
+    gap: 20px;
+    flex-wrap: wrap;
+
 }
 
 .newsletter h1 {
     color: #5E3A13;
-    font-size: 60px;
+    font-size: 55px;
     
 }
 
@@ -49,9 +51,15 @@
     width: 210px;
     height: 70px;
     border-radius: 80px;
-    background: #d5a473;
+    background: #C4996C;
     color: #5E3A13;
+    border: 1px solid #5E3A13;
     font-size: 20px;
     font-weight: 500;
+    outline: none;
     cursor: pointer;
+}
+
+.newsletter div button:active {
+    background: #EEDDCC;
 }
