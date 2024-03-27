@@ -1,7 +1,7 @@
 import React from 'react'
 import MainInfo from '../components/mainInfo/MainInfo'
 import AboutUsHome from '../components/aboutUsHome/AboutUsHome'
-import NewsLetter from '../components/NewsLetter/NewsLetter'
+import NewsLetter from '../components/newsLetter/NewsLetter'
 
 const Home = ({setMenu}) => {
   return (

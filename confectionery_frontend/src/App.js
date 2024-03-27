@@ -9,7 +9,7 @@ import Cart from './pages/Cart.jsx';
 import LoginSignUp from './pages/LoginSignUp.jsx'
 import User from './pages/User';
 import React, { useState } from 'react';
-import Footer from './components/Footer/Footer';
+import Footer from './components/footer/Footer';
 
 
 function App() {
