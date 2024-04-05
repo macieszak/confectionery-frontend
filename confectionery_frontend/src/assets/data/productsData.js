@@ -17,7 +17,7 @@ const productsData = [
     { id: 12, name: 'Produkt 12', price: '11', imageUrl: cookie1, category: "cookies" },
     { id: 13, name: 'Produkt 13', price: '120', imageUrl: cookie1, category: "cakes" },
     { id: 14, name: 'Produkt 14', price: '10.01', imageUrl: cookie1, category: "cookies" },
-    { id: 15, name: 'Produkt 15', price: '12.5', imageUrl: cookie1, category: "cakes" },
+    { id: 15, name: 'Produkt 15', price: '12.5', imageUrl: cookie1, category: "cakes", description: "testowy opis"},
 ];
 
 export default productsData;
