@@ -8,7 +8,7 @@ const Home = ({setMenu}) => {
     <div>
       <MainInfo setMenu={setMenu}/>
       <AboutUsHome setMenu={setMenu}/>
-      <NewsLetter/>
+      {/* <NewsLetter setMenu={setMenu}/> */}
     </div>
   )
 }

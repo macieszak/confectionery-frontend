@@ -1,0 +1,25 @@
+.productListItem {
+  border: 3px solid #5E3A13;
+  padding: 20px;
+  width: 200px;
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  text-align: center; 
+  
+}
+
+.productListItem img {
+  width: 100%; 
+  height: auto;
+}
+
+.productListItem h3, .productListItem p {
+  margin: 10px 0; 
+  color: #5E3A13;
+}
+
+.productListItem p {
+  margin: 2px 0; 
+  color: #5E3A13;
+}

@@ -10,28 +10,29 @@ import LoginSignUp from './pages/LoginSignUp.jsx'
 import User from './pages/User';
 import React, { useState } from 'react';
 import Footer from './components/footer/Footer';
+import Products from './pages/Products';
 
 
 function App() {
   const [menu, setMenu] = useState("home");
 
   return (
-    <div>
+    <div className='main'>
       <BrowserRouter>
+      <div className='content'>
       <NavigationBar menu={menu} setMenu={setMenu}/>
       <Routes>
         <Route path='/' element={<Home setMenu={setMenu} />}/>
         <Route path='/aboutus' element={<AboutUs/>}/>
-        <Route path='/products' element={<Product/>}/>
+        <Route path='/products' element={<Products/>}/>
         <Route path='/contacts' element={<Contact/>}/>
-        <Route path='/product' element={<Product/>}>
-          <Route path=':productId' element={<Product/>}/> 
-        </Route>
+        <Route path='/product/:productId' element={<Product/>}/> 
          <Route path='/cart' element={<Cart/>}/>
          <Route path='/user' element={<User/>}/>
          <Route path='/login' element={<LoginSignUp/>}/>
       </Routes>
-      <Footer/>
+      </div>
+      <Footer className="footer" />
       </BrowserRouter>
     </div>
   );
