@@ -1,39 +1,54 @@
-.userContainer {
+.userPageContainer {
 	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	padding-left: 80px;
-	padding-top: 100px;
-	min-height: 100vh;
-}
+	flex-direction: row; /* Ustawia elementy poziomo */
+	align-items: flex-start; /* Zapobiega rozciąganiu dzieci do maksymalnej wysokości kontenera */
+	gap: 20px; /* Ustawia odstęp między elementami */
+  }
 
-.userContainer h1 {
-	font-size: 30px;
-	text-decoration: underline;
-	margin-bottom: 20px;
-	color: #5e3a13;
-}
+.userSidebar {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    padding-left: 80px; 
+    padding-top: 100px; 
+    min-height: 100vh; 
 
-.userContainer nav ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
+  }
+  
+  .userSidebar h1 {
+    font-size: 30px; 
+    text-decoration: underline; 
+    margin-bottom: 20px;
+    color: #5E3A13;
+  }
+  
+  .userSidebar nav ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+  }
+  
+  .userSidebar nav ul li {
+    margin-bottom: 10px; 
+    color: #5E3A13;
+  }
+  
+  .userSidebar nav ul li a {
+    font-size: 24px; 
+    text-decoration: underline; 
+    color: inherit; 
+    transition: color 0.3s; 
+  }
+  
+  .userSidebar nav ul li a:hover,
+  .userSidebar nav ul li a:active {
+    color: #C4996C; 
+    cursor: pointer; 
+  }
+  
 
-.userContainer nav ul li {
-	margin-bottom: 10px;
-	color: #5e3a13;
-}
-
-.userContainer nav ul li a {
-	font-size: 24px;
-	text-decoration: underline;
-	color: inherit;
-	transition: color 0.3s;
-}
-
-.userContainer nav ul li a:hover,
-.userContainer nav ul li a:active {
-	color: #c4996c;
-	cursor: pointer;
-}
+  .userContent {
+	flex: 3;
+  }
+  

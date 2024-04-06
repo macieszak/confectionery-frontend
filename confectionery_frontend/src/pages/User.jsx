@@ -11,28 +11,32 @@ const User = () => {
 	}
 
 	return (
-		<div className='userContainer'>
-			<h1>My Account</h1>
-			<nav>
-				<ul>
-					<li>
-						<Link to='profile'>Profile Info</Link>
-					</li>
-					<li>
-						<Link to='wallet'>Wallet</Link>
-					</li>
-					<li>
-						<Link to='addresses'>Addresses</Link>
-					</li>
-					<li>
-						<Link to='order-history'>Order History</Link>
-					</li>
-					<li>
-						<Link to='favorite'>Favorite</Link>
-					</li>
-				</ul>
-			</nav>
-			<Outlet />
+		<div className='userPageContainer'>
+			<div className='userSidebar'>
+				<h1>My Account</h1>
+				<nav>
+					<ul>
+						<li>
+							<Link to='profile'>Profile Info</Link>
+						</li>
+						<li>
+							<Link to='wallet'>Wallet</Link>
+						</li>
+						<li>
+							<Link to='addresses'>Addresses</Link>
+						</li>
+						<li>
+							<Link to='order-history'>Order History</Link>
+						</li>
+						<li>
+							<Link to='favorite'>Favorite</Link>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<div className='userContent'>
+				<Outlet />
+			</div>
 		</div>
 	)
 }

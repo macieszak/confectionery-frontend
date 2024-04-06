@@ -1,0 +1,65 @@
+.profileInfoContainer {
+	background: #f8f0e3;
+	padding: 40px;
+	width: 70%;
+	max-width: 900px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin: 40px auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.profileInfoContainer h2 {
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.profileInfoContainer form {
+	display: flex;
+	flex-direction: column;
+}
+
+.profileInfoContainer label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 1em;
+	margin-bottom: 10px;
+}
+
+.profileInfoContainer input {
+	width: calc(100% - 20px);
+	padding: 15px;
+	margin-bottom: 30px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 1em;
+}
+
+.profileInfoContainer button {
+	width: 100%;
+	padding: 15px;
+	background-color: #d9a571;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	margin-top: 10px;
+	font-size: 1em;
+	margin-bottom: 30px;
+}
+
+.profileInfoContainer button:hover {
+	background-color: #c98a5f;
+}
+
+/* ProfileInfo.css */
+@media (max-width: 768px) {
+    .profileInfoContainer {
+      width: 100%; /* Pełna szerokość na mniejszych ekranach */
+      /* Możesz również dodać inne style, które będą pasowały do mniejszego widoku */
+    }
+  }
+  
