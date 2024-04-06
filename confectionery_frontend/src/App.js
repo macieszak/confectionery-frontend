@@ -11,8 +11,12 @@ import User from './pages/User'
 import React, { useState } from 'react'
 import Footer from './components/footer/Footer'
 import Products from './pages/Products'
-import { AuthProvider } from './context/AuthContext';
-
+import { AuthProvider } from './context/AuthContext'
+import ProfileInfo from './components/userComponents/profileInfo/ProfileInfo'
+import Wallet from './components/userComponents/wallet/Wallet'
+import Addresses from './components/userComponents/addresses/Addresses'
+import OrderHistory from './components/userComponents/orderHistory/OrderHistory'
+import Favorite from './components/userComponents/favorite/Favorite'
 
 function App() {
 	const [menu, setMenu] = useState('home')
@@ -30,7 +34,13 @@ function App() {
 							<Route path='/contacts' element={<Contact />} />
 							<Route path='/product/:productId' element={<Product />} />
 							<Route path='/cart' element={<Cart />} />
-							<Route path='/user' element={<User />} />
+							<Route path='/user' element={<User />}>
+								<Route path='profile' element={<ProfileInfo />} />
+								<Route path='wallet' element={<Wallet />} />
+								<Route path='addresses' element={<Addresses />} />
+								<Route path='order-history' element={<OrderHistory />} />
+								<Route path='favorite' element={<Favorite />} />
+							</Route>
 							<Route path='/login' element={<LoginSignUp />} />
 						</Routes>
 					</div>
