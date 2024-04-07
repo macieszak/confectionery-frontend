@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import './OrderHistory.css'
 
 const OrderHistory = () => {
@@ -6,18 +6,18 @@ const OrderHistory = () => {
 	const orders = [
 		{ id: 1, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 1', 'Item 2'] },
 		{ id: 2, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 3, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 4, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 5, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 6, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 7, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 8, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 9, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 10, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 11, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 12, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 13, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-    { id: 14, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 3, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 4, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 5, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 6, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 7, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 8, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 9, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 10, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 11, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 12, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 13, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
+		{ id: 14, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
 		// ... więcej zamówień
 	]
 
