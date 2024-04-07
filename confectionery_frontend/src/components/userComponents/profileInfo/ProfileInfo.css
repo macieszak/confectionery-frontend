@@ -2,23 +2,10 @@
 	background: #f8f0e3;
 	padding: 40px;
 	width: 70%;
-	max-width: 900px;
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	margin: 40px auto;
-	/* position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%); */
-
-    width: 70%;
-    max-width: 900px; /* Maksymalna szerokość, dostosuj według potrzeb */
-    padding: 40px;
-    margin: 0; /* Usunięte `margin: 40px auto` */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    
-    margin-left: 0;
+	max-width: 900px;
+    margin: 0; 
     margin-right: auto;
 }
 

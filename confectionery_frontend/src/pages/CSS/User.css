@@ -1,8 +1,8 @@
 .userPageContainer {
 	display: flex;
 	flex-direction: row;
-	justify-content: center; 
-	align-items: flex-start; 
+	justify-content: center;
+	align-items: flex-start;
 	gap: 20px;
 	padding: 20px;
 	min-height: 100vh;
@@ -10,7 +10,7 @@
 
 .userSidebar {
 	flex: 1;
-	width: 250px; 
+	width: 250px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -53,5 +53,5 @@
 .userContent {
 	flex: 3;
 	display: flex;
-	margin-top: 100px; /* Dodatkowe obniżenie zawartości */
+	margin-top: 100px;
 }
