@@ -6,10 +6,20 @@
 	border-radius: 10px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	margin: 40px auto;
-	position: absolute;
+	/* position: absolute;
 	top: 50%;
 	left: 50%;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%); */
+
+    width: 70%;
+    max-width: 900px; /* Maksymalna szerokość, dostosuj według potrzeb */
+    padding: 40px;
+    margin: 0; /* Usunięte `margin: 40px auto` */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    margin-left: 0;
+    margin-right: auto;
 }
 
 .profileInfoContainer h2 {
@@ -55,11 +65,15 @@
 	background-color: #c98a5f;
 }
 
-/* ProfileInfo.css */
+
 @media (max-width: 768px) {
     .profileInfoContainer {
-      width: 100%; /* Pełna szerokość na mniejszych ekranach */
-      /* Możesz również dodać inne style, które będą pasowały do mniejszego widoku */
+      width: 100%; 
     }
   }
+  
+
+
+
+
   
