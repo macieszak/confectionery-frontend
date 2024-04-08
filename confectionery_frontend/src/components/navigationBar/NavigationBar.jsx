@@ -6,7 +6,7 @@ import { FaRegUser } from 'react-icons/fa'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
-const NavigationBar = ({ menu, setMenu }) => {
+const NavigationBar = ({ menu, setMenu, cartItemCount }) => {
 	const { user, logout } = useAuth()
 
 	return (
@@ -69,7 +69,7 @@ const NavigationBar = ({ menu, setMenu }) => {
 							{' '}
 							<FaShoppingCart className='cart-icon' />{' '}
 						</Link>
-						<div className='nav-cart-count'>0</div>
+						<div className='nav-cart-count'>{cartItemCount}</div>
 					</>
 				) : (
 					<Link to='/login'>

@@ -20,20 +20,24 @@ import Favorite from './components/userComponents/favorite/Favorite'
 
 function App() {
 	const [menu, setMenu] = useState('home')
+	const [cartItemCount, setCartItemCount] = useState(0);
+	const updateCartItemCount = (newCount) => {
+		setCartItemCount(newCount);
+	  };
 
 	return (
 		<div className='main'>
 			<AuthProvider>
 				<BrowserRouter>
 					<div className='content'>
-						<NavigationBar menu={menu} setMenu={setMenu} />
+					<NavigationBar menu={menu} setMenu={setMenu} cartItemCount={cartItemCount} />
 						<Routes>
 							<Route path='/' element={<Home setMenu={setMenu} />} />
 							<Route path='/aboutus' element={<AboutUs />} />
 							<Route path='/products' element={<Products />} />
 							<Route path='/contacts' element={<Contact />} />
 							<Route path='/product/:productId' element={<Product />} />
-							<Route path='/cart' element={<Cart />} />
+							<Route path='/cart' element={<Cart updateCartItemCount={updateCartItemCount} />} />
 							<Route path='/user' element={<User />}>
 								<Route path='profile' element={<ProfileInfo />} />
 								<Route path='wallet' element={<Wallet />} />
