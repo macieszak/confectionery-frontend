@@ -3,6 +3,8 @@ import './CSS/Cart.css'
 import productsData from '../assets/data/productsData'
 import OrderSummary from '../components/orderSummary/OrderSummary'
 import CartItem from '../components/cartItem/CartItem'
+import { useNavigate } from 'react-router-dom'
+import SelectAddress from '../components/selectAddress/SelectAddress'
 
 const Cart = ({ updateCartItemCount }) => {
 	const initialCartItems = productsData.map(product => ({
@@ -40,15 +42,17 @@ const Cart = ({ updateCartItemCount }) => {
 		setCartItems(currentItems => currentItems.filter(item => item.id !== productId))
 	}
 
-	
-
 	useEffect(() => {
 		// Oblicz nową łączną ilość produktów
-		const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-		updateCartItemCount(itemCount); // Aktualizuj stan w komponencie App
-	  }, [cartItems]);
+		const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+		updateCartItemCount(itemCount) // Aktualizuj stan w komponencie App
+	}, [cartItems])
 
+	const navigate = useNavigate()
 
+	const handleNextStep = () => {
+		navigate('/delivery') // Zaktualizowana ścieżka
+	}
 
 	return (
 		<div className='cart-container'>
@@ -70,7 +74,7 @@ const Cart = ({ updateCartItemCount }) => {
 				)}
 			</div>
 			<div className='cart-order-summary'>
-				<OrderSummary subtotal={subtotal} delivery={delivery} total={total} />
+				<OrderSummary subtotal={subtotal} delivery={delivery} total={total} onNextStep={handleNextStep} />
 			</div>
 		</div>
 	)

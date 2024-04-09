@@ -17,6 +17,8 @@ import Wallet from './components/userComponents/wallet/Wallet'
 import Addresses from './components/userComponents/addresses/Addresses'
 import OrderHistory from './components/userComponents/orderHistory/OrderHistory'
 import Favorite from './components/userComponents/favorite/Favorite'
+import SelectAddress from './components/selectAddress/SelectAddress'
+import DeliveryPage from './components/deliveryPage/DeliveryPage'
 
 function App() {
 	const [menu, setMenu] = useState('home')
@@ -38,6 +40,8 @@ function App() {
 							<Route path='/contacts' element={<Contact />} />
 							<Route path='/product/:productId' element={<Product />} />
 							<Route path='/cart' element={<Cart updateCartItemCount={updateCartItemCount} />} />
+								<Route path='/select-address' element={<SelectAddress />} />
+								<Route path='/delivery' element={<DeliveryPage />} />
 							<Route path='/user' element={<User />}>
 								<Route path='profile' element={<ProfileInfo />} />
 								<Route path='wallet' element={<Wallet />} />

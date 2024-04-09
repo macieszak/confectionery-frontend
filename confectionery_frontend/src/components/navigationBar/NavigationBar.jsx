@@ -41,7 +41,7 @@ const NavigationBar = ({ menu, setMenu, cartItemCount }) => {
 						setMenu('product')
 					}}>
 					<Link style={{ textDecoration: 'none' }} to='/products'>
-						Product
+						Products
 					</Link>{' '}
 					{menu == 'product' ? <hr /> : <></>}
 				</li>

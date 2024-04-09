@@ -1,0 +1,16 @@
+.delivery-page-container {
+  display: flex;
+  justify-content: center; 
+  padding: 20px;
+  padding-top: 80px; 
+  min-height: calc(100vh - 80px); 
+}
+
+
+.select-address-section {
+  flex: 1;
+}
+
+
+
+
