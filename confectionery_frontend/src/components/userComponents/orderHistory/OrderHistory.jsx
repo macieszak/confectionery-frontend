@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 import './OrderHistory.css'
+import { useLocation } from 'react-router-dom';
 
 const OrderHistory = () => {
 	// Przykładowe dane, które będą później pobierane z API
@@ -26,6 +27,16 @@ const OrderHistory = () => {
 	const showMoreOrders = () => {
 		setVisibleOrders(prevVisibleOrders => prevVisibleOrders + 3) // Pokazuje 3 więcej zamówień
 	}
+
+
+	const location = useLocation();
+	const message = location.state?.message;
+  
+	useEffect(() => {
+	  if (message) {
+		alert(message);
+	  }
+	}, [message]);
 
 	return (
 		<div className='orderHistoryContainer'>

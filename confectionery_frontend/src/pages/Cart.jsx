@@ -4,7 +4,6 @@ import productsData from '../assets/data/productsData'
 import OrderSummary from '../components/orderSummary/OrderSummary'
 import CartItem from '../components/cartItem/CartItem'
 import { useNavigate } from 'react-router-dom'
-import SelectAddress from '../components/selectAddress/SelectAddress'
 
 const Cart = ({ updateCartItemCount }) => {
 	const initialCartItems = productsData.map(product => ({

@@ -33,7 +33,7 @@ const SelectAddress = () => {
 					{address}
 				</div>
 			))}
-			<input type='text' placeholder='Nowy adres' value={newAddress} onChange={e => setNewAddress(e.target.value)} />
+			<input type='text' placeholder='New Address' value={newAddress} onChange={e => setNewAddress(e.target.value)} />
 			<button onClick={handleAddNewAddress}>Add a new address</button>
 		</div>
 	)

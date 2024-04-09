@@ -9,7 +9,7 @@
 }
 
 .select-address-container h2 {
-  color: #333;
+	color: #333;
 	margin-bottom: 20px;
 	text-align: center;
 }
@@ -31,17 +31,17 @@
 .select-address-container input {
 	width: 100%;
 	padding: 0.5em;
-  background-color: #fff;
+	background-color: #fff;
 	border: 1px solid #ddd;
 	border-radius: 4px;
-  box-sizing: border-box;
-  text-align: center; /* Wyśrodkowanie placeholdera i tekstu */
-
+	box-sizing: border-box;
+	text-align: center; /* Wyśrodkowanie placeholdera i tekstu */
+	font-size: 18px;
 }
 
 .select-address-container input::placeholder {
-  text-align: center;
-  opacity: 0.6;
+	text-align: center;
+	opacity: 0.6;
 }
 
 .select-address-container button {
