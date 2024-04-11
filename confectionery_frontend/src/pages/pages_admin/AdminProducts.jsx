@@ -13,6 +13,16 @@ const AdminProducts = () => {
 	const [priceRange, setPriceRange] = useState('all')
 	const [priceFilter, setPriceFilter] = useState('all')
 
+	const navigate = useNavigate();
+
+	const goToAddProductPage = () => {
+	  navigate('/admin/add-product'); // Zmodyfikuj ścieżkę zgodnie z potrzebami
+  };
+
+	const handleProductClick = (productId) => {
+	  navigate(`/admin/product/${productId}`);
+	};
+
 	useEffect(() => {
 		let filteredAndSortedProducts = productsData
 			.filter(product => {
@@ -43,11 +53,6 @@ const AdminProducts = () => {
 		setProducts(filteredAndSortedProducts)
 	}, [searchTerm, sortOption, categoryFilter, priceFilter]) // Aktualizacja listy zależności
   
-  const navigate = useNavigate();
-
-  const goToAddProductPage = () => {
-    navigate('/admin/add-product'); // Zmodyfikuj ścieżkę zgodnie z potrzebami
-};
 
 	return (
 		<div className='admin-products-page'>
@@ -123,7 +128,7 @@ const AdminProducts = () => {
 
 			<div className='products'>
 				{products.map(product => (
-					<ProductListItem key={product.id} {...product} />
+					<ProductListItem key={product.id} {...product} onClick={handleProductClick} />
 				))}
 			</div>
 		</div>
@@ -131,3 +136,4 @@ const AdminProducts = () => {
 }
 
 export default AdminProducts
+ 

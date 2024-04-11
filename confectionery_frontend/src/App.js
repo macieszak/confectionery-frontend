@@ -30,6 +30,7 @@ import SummaryPage from './pages/pages_user/SummaryPage'
 
 import Footer from './components/user_components/footer/Footer'
 import AdminProductAdd from './pages/pages_admin/AdminProductAdd'
+import AdminProductEdit from './pages/pages_admin/AdminProductEdit'
 
 function App() {
 	const [menu, setMenu] = useState('home')
@@ -54,6 +55,7 @@ function App() {
 						{user && user.role === 'admin' ? (
 							<>
 								<Route path='/admin/products' element={<AdminProducts />} />
+									<Route path='/admin/product/:productId' element={<AdminProductEdit />} />
 								<Route path='/admin/add-product' element={<AdminProductAdd />} />
 								<Route path='/admin/users' element={<AdminUsers />} />
 								<Route path='/admin/orders' element={<AdminOrders />} />

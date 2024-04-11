@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import '../CSS/Products.css'
 import ProductListItem from '../../components/user_components/productListItem/ProductListItem'
 import productsData from '../../assets/data/productsData'
+import { useNavigate } from 'react-router-dom'
 
 const Products = () => {
 	const [products, setProducts] = useState([])
@@ -10,6 +11,12 @@ const Products = () => {
 	const [categoryFilter, setCategoryFilter] = useState('all')
 	const [priceRange, setPriceRange] = useState('all')
 	const [priceFilter, setPriceFilter] = useState('all')
+	
+	const navigate = useNavigate();
+
+	const handleProductClick = (productId) => {
+	  navigate(`/product/${productId}`);
+	};
 
 	useEffect(() => {
 		let filteredAndSortedProducts = productsData
@@ -105,7 +112,7 @@ const Products = () => {
 
 			<div className='products'>
 				{products.map(product => (
-					<ProductListItem key={product.id} {...product} />
+					<ProductListItem key={product.id} {...product} onClick={handleProductClick} />
 				))}
 			</div>
 		</div>
