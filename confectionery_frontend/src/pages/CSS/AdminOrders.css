@@ -1,0 +1,69 @@
+.admin-users-orders {
+	padding: 20px;
+	font-family: Arial, sans-serif;
+}
+
+.admin-users-orders h2 {
+	text-align: center;
+	color: #333;
+	margin-bottom: 20px;
+}
+
+.admin-users-orders table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-users-orders th,
+.admin-users-orders td {
+	border: 1px solid #ddd;
+	text-align: left;
+	padding: 8px;
+}
+
+.admin-users-orders th {
+	background-color: #4caf50;
+	color: white;
+}
+
+.admin-users-orders tr {
+	background-color: #f9f9f9;
+}
+
+.admin-users-orders select {
+	padding: 6px 10px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+	background-color: white;
+	cursor: pointer;
+	font-size: 16px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.admin-users-orders select:active,
+.admin-users-orders select:focus {
+	outline: none;
+	border-color: #4caf50;
+}
+
+.admin-users-orders button {
+	background-color: #4caf50;
+	color: white;
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.admin-users-orders button:hover {
+	background-color: #367c39;
+}
+
+.admin-users-orders .status-column,
+.admin-users-orders .action-column {
+	width: 120px;
+}

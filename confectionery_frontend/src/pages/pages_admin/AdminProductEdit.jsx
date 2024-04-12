@@ -9,21 +9,18 @@ const AdminProductEdit = () => {
 	const [product, setProduct] = useState(null)
 
 	const saveChanges = () => {
-		// Tutaj możesz dodać logikę do wysyłania danych produktu do API.
 		// Ponieważ API nie jest dostępne, poniżej znajduje się symulacja takiego wywołania.
-
 		console.log('Saving changes for product:', product)
 
 		// Symulacja opóźnienia odpowiedzi z API
 		setTimeout(() => {
 			alert('Product details saved successfully!')
-			// Możesz tu również przekierować użytkownika np. z powrotem do listy produktów
 			navigate('/admin/products')
 		}, 1000)
 	}
 
 	const deleteProduct = () => {
-		// Tutaj umieściłbyś logikę do wysyłania żądania usunięcia produktu do API.
+		// Tutaj umieszczę logikę do wysyłania żądania usunięcia produktu do API.
 		// Symulacja takiego wywołania poniżej.
 
 		console.log('Deleting product with id:', product.id)
@@ -31,8 +28,6 @@ const AdminProductEdit = () => {
 		// Symulacja opóźnienia odpowiedzi z API
 		setTimeout(() => {
 			alert('Product deleted successfully!')
-			// Po usunięciu produktu, przekieruj użytkownika do listy produktów
-			// navigate('/admin/products');
 		}, 1000)
 	}
 
@@ -44,14 +39,12 @@ const AdminProductEdit = () => {
 	const handleSaveChanges = () => {
 		// Logika do zapisywania zmian
 		console.log('Changes saved')
-		// Przekierowanie do listy produktów admina po zapisie zmian
 		navigate('/admin/products')
 	}
 
 	const handleDeleteProduct = () => {
 		// Logika do usuwania produktu
 		console.log('Product deleted')
-		// Przekierowanie do listy produktów admina po usunięciu
 		navigate('/admin/products')
 	}
 
@@ -63,7 +56,6 @@ const AdminProductEdit = () => {
 		<div className='product-container'>
 			<div className='product-image-section'>
 				<img src={product.imageUrl} alt={product.name} className='product-image' />
-				{/* Umieszczenie inputa i etykiety pod obrazkiem */}
 				<input
 					type='file'
 					accept='image/*'
@@ -72,12 +64,11 @@ const AdminProductEdit = () => {
 					onChange={e => setProduct({ ...product, imageUrl: URL.createObjectURL(e.target.files[0]) })}
 				/>
 				<label htmlFor='file' className='file-input-label'>
-					Wybierz plik
+					Choose File
 				</label>
 			</div>
 			<div className='product-details-section'>
-				{/* Nazwa produktu */}
-				<label htmlFor='product-name'>Nazwa produktu:</label>
+				<label htmlFor='product-name'>Product name:</label>
 				<input
 					type='text'
 					id='product-name'
@@ -85,8 +76,7 @@ const AdminProductEdit = () => {
 					onChange={e => setProduct({ ...product, name: e.target.value })}
 					className='product-title'
 				/>
-				{/* Kategoria produktu */}
-				<label htmlFor='product-category'>Kategoria produktu:</label>
+				<label htmlFor='product-category'>Product category:</label>
 				<input
 					type='text'
 					id='product-category'
@@ -94,8 +84,7 @@ const AdminProductEdit = () => {
 					onChange={e => setProduct({ ...product, category: e.target.value })}
 					className='product-category'
 				/>
-				{/* Cena produktu */}
-				<label htmlFor='product-price'>Cena produktu:</label>
+				<label htmlFor='product-price'>Product price:</label>
 				<input
 					type='number'
 					id='product-price'
@@ -103,20 +92,17 @@ const AdminProductEdit = () => {
 					onChange={e => setProduct({ ...product, price: e.target.value })}
 					className='product-price'
 				/>
-				{/* Opis produktu */}
-				<label htmlFor='product-description'>Opis produktu:</label>
+				<label htmlFor='product-description'>Product description:</label>
 				<textarea
 					id='product-description'
 					value={product.description}
 					onChange={e => setProduct({ ...product, description: e.target.value })}></textarea>
-
-				{/* Przyciski akcji */}
 				<div className='product-actions'>
 					<button onClick={saveChanges} className='save-changes-btn'>
-						Zapisz zmiany
+						Save Changes
 					</button>
 					<button onClick={deleteProduct} className='delete-product-btn'>
-						Usuń produkt
+						Delete Product
 					</button>
 				</div>
 			</div>

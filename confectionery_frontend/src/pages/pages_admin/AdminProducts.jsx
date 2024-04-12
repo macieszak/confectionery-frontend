@@ -16,7 +16,7 @@ const AdminProducts = () => {
 	const navigate = useNavigate();
 
 	const goToAddProductPage = () => {
-	  navigate('/admin/add-product'); // Zmodyfikuj ścieżkę zgodnie z potrzebami
+	  navigate('/admin/add-product');
   };
 
 	const handleProductClick = (productId) => {
@@ -100,7 +100,6 @@ const AdminProducts = () => {
 							onClick={() => setCategoryFilter('cookies')}>
 							Cookies
 						</button>
-						{/* Dodaj więcej kategorii z odpowiednią logiką */}
 					</div>
 				</div>
 				<div className='filter-price'>
@@ -121,7 +120,6 @@ const AdminProducts = () => {
 							onClick={() => setPriceFilter('15-50')}>
 							15zł-50zł
 						</button>
-						{/* Dodaj więcej opcji cenowych z odpowiednią logiką */}
 					</div>
 				</div>
 			</div>

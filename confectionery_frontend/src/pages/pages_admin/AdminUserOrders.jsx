@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import '../CSS/AdminOrders.css'
+import '../CSS/AdminUserOrders.css'
 
 const sampleOrdersData = [
 	{
@@ -44,12 +44,22 @@ const sampleOrdersData = [
 	},
 ]
 
-const AdminOrders = () => {
+const AdminUserOrders = () => {
 	const [orders, setOrders] = useState([])
 
 	useEffect(() => {
-		setOrders(sampleOrdersData)
+		// Tutaj należałoby pobrać dane zamówień użytkownika z API
+		setOrders(sampleOrdersData) // przykładowe dane dla demonstracji
 	}, [])
+
+	const toggleOrderStatus = orderId => {
+		// Logika do zmiany statusu zamówienia (np. z "Pending" na "Completed")
+		// Symulacja aktualizacji statusu
+		const updatedOrders = orders.map(order =>
+			order.orderId === orderId ? { ...order, status: order.status === 'Completed' ? 'Pending' : 'Completed' } : order
+		)
+		setOrders(updatedOrders)
+	}
 
 	const changeOrderStatus = (orderId, newStatus) => {
 		const updatedOrders = orders.map(order => (order.orderId === orderId ? { ...order, status: newStatus } : order))
@@ -57,8 +67,8 @@ const AdminOrders = () => {
 	}
 
 	return (
-		<div className='admin-users-orders'>
-			<h2>All Orders</h2>
+		<div className='admin-user-orders'>
+			<h2>User Orders</h2>
 			<table>
 				<thead>
 					<tr>
@@ -95,4 +105,4 @@ const AdminOrders = () => {
 	)
 }
 
-export default AdminOrders
+export default AdminUserOrders

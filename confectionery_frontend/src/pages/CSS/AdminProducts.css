@@ -1,7 +1,7 @@
 .admin-products-page {
 	flex-direction: column;
 	align-items: center;
-	display: grid; /* to pomoglo na zmniejszanie sie obrazow podczas filtrowania */
+	display: grid;
 }
 
 .admin-products-page h2 {
@@ -9,17 +9,6 @@
 	padding-bottom: 20px;
 	color: #5e3a13;
 }
-
-/* .add-product-btn {
-    background-color: #4CAF50; 
-    color: white;
-    padding: 10px 24px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-} */
 
 .add-product-btn {
 	padding: 10px;
@@ -38,4 +27,3 @@
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
 }
-

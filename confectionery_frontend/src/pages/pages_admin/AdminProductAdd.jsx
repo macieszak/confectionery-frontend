@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../CSS/AdminProductEdit.css'; // Użyjemy tych samych styli
+import '../CSS/AdminProductEdit.css';
 
 const AdminProductAdd = () => {
   const navigate = useNavigate();
@@ -36,11 +36,11 @@ const AdminProductAdd = () => {
           onChange={e => setProduct({ ...product, imageUrl: URL.createObjectURL(e.target.files[0]) })}
         />
         <label htmlFor='file' className='file-input-label'>
-          Wybierz plik
+        Choose File
         </label>
       </div>
       <div className='product-details-section'>
-        <label htmlFor='product-name'>Nazwa produktu:</label>
+        <label htmlFor='product-name'>Product name:</label>
         <input
           type='text'
           id='product-name'
@@ -48,7 +48,7 @@ const AdminProductAdd = () => {
           onChange={e => setProduct({ ...product, name: e.target.value })}
           className='product-title'
         />
-        <label htmlFor='product-category'>Kategoria produktu:</label>
+        <label htmlFor='product-category'>Product category:</label>
         <input
           type='text'
           id='product-category'
@@ -56,7 +56,7 @@ const AdminProductAdd = () => {
           onChange={e => setProduct({ ...product, category: e.target.value })}
           className='product-category'
         />
-        <label htmlFor='product-price'>Cena produktu:</label>
+        <label htmlFor='product-price'>Product price:</label>
         <input
           type='number'
           id='product-price'
@@ -64,7 +64,7 @@ const AdminProductAdd = () => {
           onChange={e => setProduct({ ...product, price: e.target.value })}
           className='product-price'
         />
-        <label htmlFor='product-description'>Opis produktu:</label>
+        <label htmlFor='product-description'>Product description:</label>
         <textarea
           id='product-description'
           value={product.description}
@@ -73,7 +73,7 @@ const AdminProductAdd = () => {
 
         <div className='product-actions'>
           <button onClick={saveChanges} className='save-changes-btn'>
-            Dodaj produkt
+            Add Product
           </button>
         </div>
       </div>
