@@ -16,7 +16,7 @@ const ProfileInfo = () => {
       <h2>Profile Information</h2>
       <form onSubmit={handleSaveChanges}>
         <label htmlFor="fullName">Full Name</label>
-        <input type="text" id="fullName" defaultValue={user.name} />
+        <input type="text" id="fullName" defaultValue={user.firstName + ' ' +user.lastName} />
 
         <label htmlFor="password">Password</label>
         <input type="password" id="password" />

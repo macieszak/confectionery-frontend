@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
 import NavigationBar from './components/user_components/navigationBar/NavigationBar.jsx'
@@ -44,15 +46,26 @@ function App() {
 	return (
 		<div className='main'>
 			<BrowserRouter>
+				<ToastContainer
+					position='top-right'
+					autoClose={5000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover
+				/>
 				<div className='content'>
-					{user && user.role === 'admin' ? (
+					{user && user.role === 'ADMIN' ? (
 						<AdminNavigationBar menu={menu} setMenu={setMenu} />
 					) : (
 						<NavigationBar menu={menu} setMenu={setMenu} cartItemCount={cartItemCount} />
 					)}
 
 					<Routes>
-						{user && user.role === 'admin' ? (
+						{user && user.role === 'ADMIN' ? (
 							<>
 								<Route path='/admin/products' element={<AdminProducts />} />
 								<Route path='/admin/product/:productId' element={<AdminProductEdit />} />

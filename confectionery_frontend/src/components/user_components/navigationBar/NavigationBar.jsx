@@ -16,14 +16,6 @@ const NavigationBar = ({ menu, setMenu, cartItemCount }) => {
 			</div>
 
 			<ul className='nav-menu'>
-				{/* {user && user.role === 'admin' && (
-					<li onClick={() => setMenu('admin')}>
-						<Link style={{ textDecoration: 'none' }} to='/admin'>
-							Admin Panel
-						</Link>
-						{menu === 'admin' ? <hr /> : <></>}
-					</li>
-				)} */}
 				<li
 					onClick={() => {
 						setMenu('home')
