@@ -42,9 +42,10 @@ const SignUpForm = () => {
 		axios
 			.post('auth/register', formData)
 			.then(response => {
-				const { accessToken, email, role, firstName, lastName } = response.data
-				localStorage.setItem('token', accessToken)
-				login({ email, role, firstName, lastName })
+				const { access_token, id ,email, role, firstName, lastName, phoneNumber } = response.data
+				localStorage.setItem('access_token', access_token)
+				console.log('TOKEN: ', access_token)
+				login({ access_token, id ,email, role, firstName, lastName, phoneNumber })
 				toast.success('Registration successful! Welcome!')
 				navigate('/')
 				setLoading(false)

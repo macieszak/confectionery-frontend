@@ -34,9 +34,9 @@ const LoginForm = () => {
 		axios
 			.post('auth/authenticate', formData)
 			.then(response => {
-				const { accessToken, firstName, lastName, email, role } = response.data
-				localStorage.setItem('token', accessToken)
-				login({ firstName, lastName, email, role })
+				const { access_token, id ,firstName, lastName, email, role, phoneNumber } = response.data
+				localStorage.setItem('access_token', access_token)
+				login({ access_token, id ,email, role, firstName, lastName, phoneNumber})
 				toast.success('Login successful! Welcome back!')
 				navigate('/')
 				setLoading(false)
