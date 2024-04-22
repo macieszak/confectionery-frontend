@@ -19,14 +19,16 @@ export const AuthProvider = ({ children }) => {
 	const login = userData => {
 		console.log('Logging in user:', userData)
 		console.log('Received token:', userData.access_token) // Log the received token for debugging
+		setUser(userData)
+		localStorage.setItem('user', JSON.stringify(userData))
+
 		if (userData.access_token) {
 			localStorage.setItem('access_token', userData.access_token)
 			console.log('Token stored in local storage:', localStorage.getItem('access_token')) // Verify token storage immediately
 		} else {
 			console.error('No access token received:', userData)
 		}
-		setUser(userData)
-		localStorage.setItem('user', JSON.stringify(userData))
+		
 	}
 
 	const logout = () => {
