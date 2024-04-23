@@ -18,24 +18,23 @@ export const AuthProvider = ({ children }) => {
 
 	const login = userData => {
 		console.log('Logging in user:', userData)
-		console.log('Received token:', userData.access_token) // Log the received token for debugging
+		console.log('Received token:', userData.access_token)
 		setUser(userData)
 		localStorage.setItem('user', JSON.stringify(userData))
 
 		if (userData.access_token) {
 			localStorage.setItem('access_token', userData.access_token)
-			console.log('Token stored in local storage:', localStorage.getItem('access_token')) // Verify token storage immediately
+			console.log('Token stored in local storage:', localStorage.getItem('access_token'))
 		} else {
 			console.error('No access token received:', userData)
 		}
-		
 	}
 
 	const logout = () => {
 		console.log('Logging out user.')
 		setUser(null)
 		localStorage.removeItem('user')
-		localStorage.removeItem('access_token') // Consistently use access_token
+		localStorage.removeItem('access_token')
 	}
 
 	return <AuthContext.Provider value={{ user, setUser, login, logout }}>{children}</AuthContext.Provider>

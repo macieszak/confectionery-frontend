@@ -1,4 +1,3 @@
-// axiosConfig.js
 import axios from 'axios'
 
 const instance = axios.create({
@@ -9,7 +8,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(config => {
-	const token = localStorage.getItem('access_token') // Use the same token key
+	const token = localStorage.getItem('access_token')
 	console.log('Axios using token: ', token)
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`
