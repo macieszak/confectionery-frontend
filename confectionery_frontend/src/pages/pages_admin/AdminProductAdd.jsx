@@ -1,85 +1,96 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from '../../configuration/axiosConfig';
-import { useAuth } from '../../context/AuthContext';
-import '../CSS/AdminProductEdit.css';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from '../../configuration/axiosConfig'
+import { useAuth } from '../../context/AuthContext'
+import '../CSS/AdminProductEdit.css'
+import { toast } from 'react-toastify'
+
 
 const AdminProductAdd = () => {
-	const { user } = useAuth(); 
-	const navigate = useNavigate();
+	const { user } = useAuth()
+	const navigate = useNavigate()
 	const [product, setProduct] = useState({
 		name: '',
 		category: '',
 		price: '',
 		description: '',
-		image: null, 
-	});
-	const [errors, setErrors] = useState({});
+		image: null,
+	})
+	const [errors, setErrors] = useState({})
 
 	const validateForm = () => {
-		let tempErrors = {};
-		let isValid = true;
+		let tempErrors = {}
+		let isValid = true
 
 		if (!product.name.trim()) {
-			tempErrors['name'] = 'Name is required';
-			isValid = false;
+			tempErrors['name'] = 'Name is required'
+			isValid = false
 		}
 		if (!product.category.trim()) {
-			tempErrors['category'] = 'Category is required';
-			isValid = false;
+			tempErrors['category'] = 'Category is required'
+			isValid = false
 		}
 		if (!product.price) {
-			tempErrors['price'] = 'Price is required';
-			isValid = false;
+			tempErrors['price'] = 'Price is required'
+			isValid = false
 		} else if (parseFloat(product.price) <= 0) {
-			tempErrors['price'] = 'Price must be greater than 0';
-			isValid = false;
+			tempErrors['price'] = 'Price must be greater than 0'
+			isValid = false
 		}
 		if (!product.description.trim()) {
-			tempErrors['description'] = 'Description is required';
-			isValid = false;
+			tempErrors['description'] = 'Description is required'
+			isValid = false
 		}
 		if (!product.image) {
-			tempErrors['image'] = 'Image is required';
-			isValid = false;
+			tempErrors['image'] = 'Image is required'
+			isValid = false
 		}
 
-		setErrors(tempErrors);
-		return isValid;
-	};
+		setErrors(tempErrors)
+		return isValid
+	}
 
 	const saveChanges = () => {
 		if (!validateForm()) {
-			alert('Please correct the errors in the form');
-			return;
+			alert('Please correct the errors in the form')
+			return
 		}
 
-		const formData = new FormData();
-		formData.append('name', product.name);
-		formData.append('category', product.category);
-		formData.append('price', product.price);
-		formData.append('description', product.description);
-		formData.append('image', product.image);
+		const formData = new FormData()
+		formData.append('name', product.name)
+		formData.append('category', product.category)
+		formData.append('price', product.price)
+		formData.append('description', product.description)
+		formData.append('image', product.image)
 
-		axios.post('http://localhost:8080/api/admin/products/add', formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		})
-		.then(response => {
-			alert('New product added successfully!');
-			navigate('/admin/products');
-		})
-		.catch(error => {
-			alert('Failed to add product');
-			console.error('There was an error!', error);
-		});
-	};
+		axios
+			.post('http://localhost:8080/api/admin/products/add', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+			.then(response => {
+				alert('New product added successfully!')
+				navigate('/admin/products')
+			})
+
+			.catch(error => {
+				if (
+					error.response &&
+					error.response.status === 409
+				) {
+					toast.error('File with this name already exists.')
+				} else {
+					alert('Failed to add product')
+					console.error('There was an error!', error)
+				}
+			})
+	}
 
 	return (
 		<div className='product-container'>
 			<div className='product-image-section'>
-				{product.image && <img src={URL.createObjectURL(product.image)} alt="Preview" className='product-image' />}
+				{product.image && <img src={URL.createObjectURL(product.image)} alt='Preview' className='product-image' />}
 				<input
 					type='file'
 					accept='image/*'
@@ -124,8 +135,7 @@ const AdminProductAdd = () => {
 				<textarea
 					id='product-description'
 					value={product.description}
-					onChange={e => setProduct({ ...product, description: e.target.value })}
-				></textarea>
+					onChange={e => setProduct({ ...product, description: e.target.value })}></textarea>
 				{errors.description && <div className='error'>{errors.description}</div>}
 				<div className='product-actions'>
 					<button onClick={saveChanges} className='save-changes-btn'>
@@ -134,7 +144,7 @@ const AdminProductAdd = () => {
 				</div>
 			</div>
 		</div>
-	);
-};
+	)
+}
 
-export default AdminProductAdd;
+export default AdminProductAdd

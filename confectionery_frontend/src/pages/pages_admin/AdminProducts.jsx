@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import '../CSS/AdminProducts.css'
-import productsData from '../../assets/data/productsData'
-import ProductListItem from '../../components/user_components/productListItem/ProductListItem';
-import { useNavigate } from 'react-router-dom';
+import ProductListItem from '../../components/user_components/productListItem/ProductListItem'
+import { useNavigate } from 'react-router-dom'
+import axios from '../../configuration/axiosConfig'
+import { useAuth } from '../../context/AuthContext';
 
 
 const AdminProducts = () => {
@@ -10,56 +11,28 @@ const AdminProducts = () => {
 	const [sortOption, setSortOption] = useState('default')
 	const [searchTerm, setSearchTerm] = useState('')
 	const [categoryFilter, setCategoryFilter] = useState('all')
-	const [priceRange, setPriceRange] = useState('all')
 	const [priceFilter, setPriceFilter] = useState('all')
-
-	const navigate = useNavigate();
-
-	const goToAddProductPage = () => {
-	  navigate('/admin/add-product');
-  };
-
-	const handleProductClick = (productId) => {
-	  navigate(`/admin/product/${productId}`);
-	};
+	const navigate = useNavigate()
+	const { user } = useAuth(); 
 
 	useEffect(() => {
-		let filteredAndSortedProducts = productsData
-			.filter(product => {
-				// Filtrowanie po nazwie
-				const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm.toLowerCase())
-				// Filtrowanie po kategorii
-				const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter
-				// Filtrowanie po przedziale cenowym
-				let matchesPrice = true
-				if (priceFilter !== 'all') {
-					const [minPrice, maxPrice] = priceFilter.split('-').map(Number)
-					const price = parseFloat(product.price)
-					matchesPrice = price >= minPrice && price <= maxPrice
-				}
-				return matchesSearchTerm && matchesCategory && matchesPrice
-			})
-			// Logika sortowania
-			.sort((a, b) => {
-				// Sortowanie według ceny
-				if (sortOption === 'cheapest') {
-					return parseFloat(a.price) - parseFloat(b.price)
-				} else if (sortOption === 'expensive') {
-					return parseFloat(b.price) - parseFloat(a.price)
-				}
-				return 0
-			})
+        axios.get('http://localhost:8080/api/admin/products/all')
+             .then(response => {
+                 setProducts(response.data.map(product => ({
+                     ...product,
+                     imageUrl: product.image.name  
+                 })));
+             })
+             .catch(error => console.log('Error fetching products', error));
+    }, []);
 
-		setProducts(filteredAndSortedProducts)
-	}, [searchTerm, sortOption, categoryFilter, priceFilter]) // Aktualizacja listy zależności
-  
+	const goToAddProductPage = () => navigate('/admin/add-product')
+	const handleProductClick = productId => navigate(`/admin/product/${productId}`)
 
 	return (
 		<div className='admin-products-page'>
 			<h2>Admin Products Management</h2>
-
 			<div className='filter-bar'>
-
 				<input
 					type='text'
 					placeholder='Search...'
@@ -67,23 +40,18 @@ const AdminProducts = () => {
 					value={searchTerm}
 					onChange={e => setSearchTerm(e.target.value)}
 				/>
-
 				<select className='sort-select' value={sortOption} onChange={e => setSortOption(e.target.value)}>
 					<option value='default'>Sort by</option>
 					<option value='cheapest'>Lowest Price</option>
 					<option value='expensive'>Highest Price</option>
 				</select>
-
-				<button className='add-product-btn'
-					onClick={goToAddProductPage}>
+				<button className='add-product-btn' onClick={goToAddProductPage}>
 					Add New Product
 				</button>
 			</div>
-
 			<div className='filter-options-row'>
 				<div className='filter-category'>
 					<h4>Category</h4>
-
 					<div>
 						<button
 							className={`filter-button ${categoryFilter === 'all' ? 'active' : ''}`}
@@ -123,7 +91,6 @@ const AdminProducts = () => {
 					</div>
 				</div>
 			</div>
-
 			<div className='products'>
 				{products.map(product => (
 					<ProductListItem key={product.id} {...product} onClick={handleProductClick} />
@@ -134,4 +101,3 @@ const AdminProducts = () => {
 }
 
 export default AdminProducts
- 

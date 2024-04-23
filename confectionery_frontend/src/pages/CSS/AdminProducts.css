@@ -26,4 +26,9 @@
 .add-product-btn:focus {
 	outline: none;
 	box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+} 
+
+.productListItem:hover {
+    transform: scale(1.05);
 }
+
