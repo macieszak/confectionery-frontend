@@ -12,7 +12,7 @@ const ProductListItem = ({ id, name, price, category, onClick, imageUrl }) => {
 	useEffect(() => {
 		const fetchImage = async () => {
 			try {
-				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/admin/products/${imageUrl}`
+				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/admin/products/img/${imageUrl}`
 				const response = await axios.get(imagePath, { responseType: 'blob' })
 				const imageBlob = response.data
 				const reader = new FileReader()
