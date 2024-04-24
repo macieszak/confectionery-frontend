@@ -42,7 +42,7 @@ const AdminProductEdit = () => {
 
 	const fetchImage = async imageName => {
 		try {
-			const response = await axios.get(`/admin/products/img/${imageName}`, { responseType: 'blob' })
+			const response = await axios.get(`/user/products/img/${imageName}`, { responseType: 'blob' })
 			const imageBlob = response.data
 			const reader = new FileReader()
 			reader.readAsDataURL(imageBlob)

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import '../CSS/Products.css'
 import ProductListItem from '../../components/user_components/productListItem/ProductListItem'
-import productsData from '../../assets/data/productsData'
 import { useNavigate } from 'react-router-dom'
+import axios from '../../configuration/axiosConfig'
+import { useAuth } from '../../context/AuthContext';
+
 
 const Products = () => {
 	const [products, setProducts] = useState([])
@@ -13,40 +15,23 @@ const Products = () => {
 	const [priceFilter, setPriceFilter] = useState('all')
 	
 	const navigate = useNavigate();
+	const { user } = useAuth();
 
 	const handleProductClick = (productId) => {
 	  navigate(`/product/${productId}`);
 	};
-
+	
 	useEffect(() => {
-		let filteredAndSortedProducts = productsData
-			.filter(product => {
-				// Filtrowanie po nazwie
-				const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm.toLowerCase())
-				// Filtrowanie po kategorii
-				const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter
-				// Filtrowanie po przedziale cenowym
-				let matchesPrice = true
-				if (priceFilter !== 'all') {
-					const [minPrice, maxPrice] = priceFilter.split('-').map(Number)
-					const price = parseFloat(product.price)
-					matchesPrice = price >= minPrice && price <= maxPrice
-				}
-				return matchesSearchTerm && matchesCategory && matchesPrice
-			})
-			// Logika sortowania
-			.sort((a, b) => {
-				// Sortowanie według ceny
-				if (sortOption === 'cheapest') {
-					return parseFloat(a.price) - parseFloat(b.price)
-				} else if (sortOption === 'expensive') {
-					return parseFloat(b.price) - parseFloat(a.price)
-				}
-				return 0
-			})
+        axios.get('http://localhost:8080/api/user/products/all')
+             .then(response => {
+                 setProducts(response.data.map(product => ({
+                     ...product,
+                     imageUrl: product.image.name  
+                 })));
+             })
+             .catch(error => console.log('Error fetching products', error));
+    }, []);
 
-		setProducts(filteredAndSortedProducts)
-	}, [searchTerm, sortOption, categoryFilter, priceFilter]) // Aktualizacja listy zależności
 
 	return (
 		<div className='products-page'>

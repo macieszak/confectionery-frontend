@@ -12,6 +12,7 @@ const AdminProducts = () => {
 	const [searchTerm, setSearchTerm] = useState('')
 	const [categoryFilter, setCategoryFilter] = useState('all')
 	const [priceFilter, setPriceFilter] = useState('all')
+	
 	const navigate = useNavigate()
 	const { user } = useAuth(); 
 
