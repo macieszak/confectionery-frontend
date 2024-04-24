@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext'
 import '../CSS/AdminProductEdit.css'
 import { toast } from 'react-toastify'
 
-
 const AdminProductAdd = () => {
 	const { user } = useAuth()
 	const navigate = useNavigate()
@@ -75,11 +74,8 @@ const AdminProductAdd = () => {
 			})
 
 			.catch(error => {
-				if (
-					error.response &&
-					error.response.status === 409
-				) {
-					toast.error('File with this name already exists.')
+				if (error.response && error.response.status === 409) {
+					toast.error('File image with this name already exists.')
 				} else {
 					alert('Failed to add product')
 					console.error('There was an error!', error)
