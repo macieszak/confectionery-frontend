@@ -1,19 +1,63 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import productsData from '../../assets/data/productsData'
-import '../CSS/Product.css'
+import React, { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import axios from '../../configuration/axiosConfig'
 import { FaHeart } from 'react-icons/fa'
+import '../CSS/Product.css'
+
 
 const Product = () => {
-	const { productId } = useParams() // Pobranie ID produktu z URL
-	const [product, setProduct] = useState(null) // Stan dla przechowywania danych produktu
-	const [quantity, setQuantity] = useState(1) // Stan dla ilości produktu
+	const navigate = useNavigate()
+	const { productId } = useParams()
+	const [product, setProduct] = useState({
+		name: '',
+		category: '',
+		price: '',
+		description: '',
+		imageUrl: '',
+	})
+	const [imageSrc, setImageSrc] = useState('')
+	const [isLoading, setIsLoading] = useState(false)
+	
+	const [quantity, setQuantity] = useState(1) //	xxx
 
 	useEffect(() => {
-		// Znajdowanie produktu na podstawie `productId`
-		const product = productsData.find(p => p.id.toString() === productId)
-		setProduct(product)
+		setIsLoading(true)
+		const fetchProduct = async () => {
+			try {
+				const { data } = await axios.get(`/user/products/${productId}`)
+				setProduct({
+					name: data.name,
+					category: data.category,
+					price: data.price,
+					description: data.description,
+					imageUrl: data.image.name,
+				})
+				fetchImage(data.image.name)
+			} catch (error) {
+				console.error('Error fetching product details:', error)
+			} finally {
+				setIsLoading(false)
+			}
+		}
+
+		fetchProduct()
 	}, [productId])
+
+	const fetchImage = async imageName => {
+		try {
+			const response = await axios.get(`/user/products/img/${imageName}`, { responseType: 'blob' })
+			const imageBlob = response.data
+			const reader = new FileReader()
+			reader.readAsDataURL(imageBlob)
+			reader.onloadend = () => {
+				setImageSrc(reader.result)
+			}
+		} catch (error) {
+			console.error('Failed to load image:', error)
+			setImageSrc('')
+		}
+	}
+
 
 	if (!product) {
 		return <div>Ładowanie...</div>
@@ -26,7 +70,7 @@ const Product = () => {
 	return (
 		<div className='product-container'>
 			<div className='product-image-section'>
-				<img src={product.imageUrl} alt={product.name} className='product-image' />
+				<img src={imageSrc} alt={product.name} className='product-image' />
 			</div>
 			<div className='product-details-section'>
 				<h2 className='product-title'>{product.name}</h2>
