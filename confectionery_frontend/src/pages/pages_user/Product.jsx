@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from '../../configuration/axiosConfig'
 import { FaHeart } from 'react-icons/fa'
+import { AuthContext, useAuth } from '../../context/AuthContext'
 import '../CSS/Product.css'
-
 
 const Product = () => {
 	const navigate = useNavigate()
 	const { productId } = useParams()
+	const { user } = useContext(AuthContext)
 	const [product, setProduct] = useState({
+		id: '',
 		name: '',
 		category: '',
 		price: '',
@@ -17,8 +19,8 @@ const Product = () => {
 	})
 	const [imageSrc, setImageSrc] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
-	
-	const [quantity, setQuantity] = useState(1) //	xxx
+
+	const [quantity, setQuantity] = useState(1) 
 
 	useEffect(() => {
 		setIsLoading(true)
@@ -26,6 +28,7 @@ const Product = () => {
 			try {
 				const { data } = await axios.get(`/user/products/${productId}`)
 				setProduct({
+					id: data.id,
 					name: data.name,
 					category: data.category,
 					price: data.price,
@@ -58,13 +61,39 @@ const Product = () => {
 		}
 	}
 
+	const addToFavorites = async () => {
+		if (!user) {
+			alert('Please log in to add favorites');
+			return;
+		}
+	
+		const payload = new URLSearchParams();
+		payload.append('userId', user.id); 
+		payload.append('favoriteProductId', product.id); 
+	
+		try {
+			const response = await axios.post('/user/favorites/add', payload, {
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'			//to pomogło
+				}
+			});
+			if (response.status === 200) {
+				alert('Product added to favorites successfully');
+			} else {
+				alert('Failed to add to favorites: ' + response.statusText);
+			}
+		} catch (error) {
+			console.error('Error adding to favorites:', error);
+			alert('Failed to add to favorites. See console for details.');
+		}
+	};
 
 	if (!product) {
 		return <div>Ładowanie...</div>
 	}
 
 	const handleQuantityChange = delta => {
-		setQuantity(prev => Math.max(1, prev + delta)) // Zapobiegamy wartościom < 1
+		setQuantity(prev => Math.max(1, prev + delta))
 	}
 
 	return (
@@ -83,7 +112,9 @@ const Product = () => {
 				</div>
 				<div className='product-actions'>
 					<button className='add-to-cart-btn'>Add to cart</button>
-					<button className='add-to-favorites-btn'>❤</button>
+					<button className='add-to-favorites-btn' onClick={addToFavorites}>
+						<FaHeart />
+					</button>
 				</div>
 				<div className='product-description'>
 					<p>Description</p>
