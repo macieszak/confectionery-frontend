@@ -74,6 +74,44 @@ const Products = () => {
              .catch(error => console.log('Error fetching products', error));
     }, []);
 
+	const fetchAllProducts = () => {
+		axios.get('http://localhost:8080/api/user/products/all')
+			.then(response => {
+				setProducts(response.data.map(product => ({
+					...product,
+					imageUrl: product.image.name  
+				})));
+			})
+			.catch(error => {
+				console.log('Error fetching all products', error);
+			});
+	};
+	
+
+	useEffect(() => {
+		if (searchTerm) {
+			fetchProductsBySearch(searchTerm);
+		} else {
+			// Możesz zdecydować, czy chcesz wyświetlić wszystkie produkty, gdy nie ma wyszukiwania
+			fetchAllProducts();
+		}
+	}, [searchTerm]);
+	
+	const fetchProductsBySearch = (query) => {
+		axios.get(`http://localhost:8080/api/user/products/search`, {
+			params: { query }
+		})
+		.then(response => {
+			setProducts(response.data.map(product => ({
+				...product,
+				imageUrl: product.image.name  
+			})));
+		})
+		.catch(error => {
+			console.log('Error fetching products by search', error);
+		});
+	};
+
 
 	useEffect(() => {
 		fetchSortedProducts(sortOption);
