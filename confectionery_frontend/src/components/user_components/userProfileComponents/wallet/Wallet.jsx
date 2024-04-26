@@ -1,21 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
+import axios from '../../../../configuration/axiosConfig';
+import { AuthContext } from '../../../../context/AuthContext';
 import './Wallet.css'
 
 const Wallet = () => {
-	// Stan lokalny dla przechowywania wpisywanej kwoty
-	const [amount, setAmount] = useState('')
-	const [balance, setBalance] = useState(1000) // Przykładowa wartość, w prawdziwej aplikacji pobierana z API
+	const { user } = useContext(AuthContext); 
+    const [amount, setAmount] = useState('');
+    const [balance, setBalance] = useState(0);
 
-	const handleAmountChange = e => {
-		setAmount(e.target.value)
-	}
+    useEffect(() => {
+        fetchBalance();
+    }, [user]);
 
-	const handleSaveChanges = e => {
-		e.preventDefault()
-		// Logika do zapisywania zmian
-		console.log('Amount to deposit:', amount)
-		// Tutaj należałoby dodać logikę aktualizującą stan konta
-	}
+	const fetchBalance = () => {
+        axios.get(`/wallet/balance/${user.id}`)
+            .then(response => {
+                setBalance(response.data);
+            })
+            .catch(error => {
+                console.error('Failed to fetch balance:', error);
+            });
+    };
+
+    const handleAmountChange = e => {
+        setAmount(e.target.value);
+    };
+
+    const handleSaveChanges = e => {
+        e.preventDefault();
+        if (parseFloat(amount) <= 0) {
+            alert('Please enter a valid amount greater than zero.');
+            return;
+        }
+        const depositRequest = {
+            userId: user.id,
+            amount: parseFloat(amount)
+        };
+        axios.post('/wallet/deposit', depositRequest)
+            .then(response => {
+                alert('Deposit successful!');
+                fetchBalance(); 
+                setAmount(''); 
+            })
+            .catch(error => {
+                console.error('Failed to deposit:', error);
+                alert('Deposit failed. Check console for details.');
+            });
+    };
+
 
 	return (
 		<div className='walletContainer'>
