@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ToastContainer } from 'react-toastify'
+import axios from './configuration/axiosConfig'
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
 
@@ -36,12 +37,10 @@ import AdminUserOrders from './pages/pages_admin/AdminUserOrders'
 
 function App() {
 	const [menu, setMenu] = useState('home')
-	const [cartItemCount, setCartItemCount] = useState(0)
 	const { user } = useAuth()
-	const updateCartItemCount = newCount => {
-		setCartItemCount(newCount)
-	}
 	console.log(user)
+
+	
 
 	return (
 		<div className='main'>
@@ -61,7 +60,7 @@ function App() {
 					{user && user.role === 'ADMIN' ? (
 						<AdminNavigationBar menu={menu} setMenu={setMenu} />
 					) : (
-						<NavigationBar menu={menu} setMenu={setMenu} cartItemCount={cartItemCount} />
+						<NavigationBar menu={menu} setMenu={setMenu} />
 					)}
 
 					<Routes>
@@ -80,10 +79,10 @@ function App() {
 								<Route path='/aboutus' element={<AboutUs />} />
 								<Route path='/products' element={<Products />} />
 								<Route path='/contacts' element={<Contact />} />
-								<Route path='/product/:productId' element={<Product />} />
-								<Route path='/cart' element={<Cart updateCartItemCount={updateCartItemCount} />} />
+								<Route path='/product/:productId' element={<Product/>} />
+								<Route path='/cart' element={<Cart />} />
 								<Route path='/delivery' element={<DeliveryPage />} />
-								<Route path='/summary' element={<SummaryPage updateCartItemCount={updateCartItemCount} />} />
+								<Route path='/summary' element={<SummaryPage />} />
 								<Route path='/user' element={<User />}>
 									<Route path='profile' element={<ProfileInfo />} />
 									<Route path='wallet' element={<Wallet />} />

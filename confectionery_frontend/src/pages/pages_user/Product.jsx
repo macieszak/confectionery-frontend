@@ -5,7 +5,7 @@ import { FaHeart } from 'react-icons/fa'
 import { AuthContext, useAuth } from '../../context/AuthContext'
 import '../CSS/Product.css'
 
-const Product = () => {
+const Product = ({ fetchCartItemCount }) => {
 	const navigate = useNavigate()
 	const { productId } = useParams()
 	const { user } = useContext(AuthContext)
@@ -19,8 +19,7 @@ const Product = () => {
 	})
 	const [imageSrc, setImageSrc] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
-
-	const [quantity, setQuantity] = useState(1) 
+	const [quantity, setQuantity] = useState(1)
 
 	useEffect(() => {
 		setIsLoading(true)
@@ -63,30 +62,50 @@ const Product = () => {
 
 	const addToFavorites = async () => {
 		if (!user) {
-			alert('Please log in to add favorites');
-			return;
+			alert('Please log in to add favorites')
+			return
 		}
-	
-		const payload = new URLSearchParams();
-		payload.append('userId', user.id); 
-		payload.append('favoriteProductId', product.id); 
-	
+
+		const payload = new URLSearchParams()
+		payload.append('userId', user.id)
+		payload.append('favoriteProductId', product.id)
+
 		try {
 			const response = await axios.post('/user/favorites/add', payload, {
 				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'			//to pomogło
-				}
-			});
+					'Content-Type': 'application/x-www-form-urlencoded', //to pomogło
+				},
+			})
 			if (response.status === 200) {
-				alert('Product added to favorites successfully');
+				alert('Product added to favorites successfully')
 			} else {
-				alert('Failed to add to favorites: ' + response.statusText);
+				alert('Failed to add to favorites: ' + response.statusText)
 			}
 		} catch (error) {
-			console.error('Error adding to favorites:', error);
-			alert('Failed to add to favorites. See console for details.');
+			console.error('Error adding to favorites:', error)
+			alert('Failed to add to favorites. See console for details.')
 		}
-	};
+	}
+
+	const addToCart = async () => {
+		if (!user) {
+			alert('Please log in to add products to the cart')
+			return
+		}
+
+		try {
+			const response = await axios.post(`cart/add/${user.id}/${product.id}/${quantity}`)
+			if (response.status === 200) {
+				alert('Product added to cart successfully')
+				window.dispatchEvent(new CustomEvent('updateCartCount'));
+			} else {
+				alert('Failed to add product to cart: ' + response.statusText)
+			}
+		} catch (error) {
+			console.error('Error adding product to cart:', error)
+			alert('Failed to add product to cart. See console for details.')
+		}
+	}
 
 	if (!product) {
 		return <div>Ładowanie...</div>
@@ -111,7 +130,9 @@ const Product = () => {
 					<button onClick={() => handleQuantityChange(1)}>+</button>
 				</div>
 				<div className='product-actions'>
-					<button className='add-to-cart-btn'>Add to cart</button>
+					<button className='add-to-cart-btn' onClick={addToCart}>
+						Add to cart
+					</button>
 					<button className='add-to-favorites-btn' onClick={addToFavorites}>
 						<FaHeart />
 					</button>

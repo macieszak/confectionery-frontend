@@ -5,7 +5,7 @@ import OrderSummary from '../../components/user_components/orderSummary/OrderSum
 import CartItem from '../../components/user_components/cartItem/CartItem'
 import { useNavigate } from 'react-router-dom'
 
-const Cart = ({ updateCartItemCount }) => {
+const Cart = ({ }) => {
 	const initialCartItems = productsData.map(product => ({
 		...product,
 		quantity: 1,
@@ -44,7 +44,7 @@ const Cart = ({ updateCartItemCount }) => {
 	useEffect(() => {
 		// Oblicz nową łączną ilość produktów
 		const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-		updateCartItemCount(itemCount) // Aktualizuj stan w komponencie App
+		
 	}, [cartItems])
 
 	const navigate = useNavigate()

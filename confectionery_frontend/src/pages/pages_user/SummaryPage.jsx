@@ -5,7 +5,7 @@ import '../CSS/SummaryPage.css'
 import SummaryCartItem from '../../components/user_components/summaryCartItem/SummaryCartItem'
 import OrderSummaryFinal from '../../components/user_components/orderSummaryFinal/OrderSummaryFinal'
 
-const SummaryPage = ({ updateCartItemCount }) => {
+const SummaryPage = () => {
 	const [cartItems, setCartItems] = useState(
 		productsData.map(product => ({
 			...product,
@@ -36,11 +36,11 @@ const SummaryPage = ({ updateCartItemCount }) => {
 		// navigate('/order-confirmation') // Przeniesienie do strony potwierdzenia
 	}
 
-	useEffect(() => {
-		// Aktualizacja całkowitej liczby przedmiotów na potrzeby koszyka
-		const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-		updateCartItemCount(itemCount)
-	}, [cartItems, updateCartItemCount])
+	// useEffect(() => {
+	// 	// Aktualizacja całkowitej liczby przedmiotów na potrzeby koszyka
+	// 	const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
+	// 	updateCartItemCount(itemCount)
+	// }, [cartItems, updateCartItemCount])
 
 	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
 	const delivery = 5 // Przykładowy koszt dostawy
