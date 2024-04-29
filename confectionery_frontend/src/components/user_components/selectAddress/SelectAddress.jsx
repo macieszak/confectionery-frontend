@@ -1,36 +1,66 @@
-import React, { useState } from 'react'
-import { useAuth } from '../../../context/AuthContext'
+import React, { useState, useEffect, useContext } from 'react'
+import axios from '../../../configuration/axiosConfig'
+import { AuthContext } from '../../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import './SelectAddress.css'
 
 const SelectAddress = () => {
-	const { currentUser } = useAuth()
+	const { user } = useContext(AuthContext)
 	const navigate = useNavigate()
+	const [addresses, setAddresses] = useState([])
+	const [newAddress, setNewAddress] = useState('')
+
+	useEffect(() => {
+		if (user) {
+			axios
+				.get(`/addresses/user/${user.id}`)
+				.then(response => {
+					setAddresses(response.data)
+				})
+				.catch(error => {
+					console.error('Failed to fetch addresses:', error)
+				})
+		}
+	}, [user])
 
 	const handleSelectAddress = address => {
-		console.log('Wybrano adres:', address)
+		console.log('Selected address:', address)
 		navigate('/summary')
 	}
 
 	const handleAddNewAddress = () => {
-		if (newAddress) {
-			setAddresses(currentAddresses => [...currentAddresses, newAddress])
-			setNewAddress('')
+		if (newAddress.trim()) {
+			const addressData = {
+				address: newAddress,
+				userId: user.id,
+			}
+
+			if (!newAddress.trim()) {
+				toast.error('New address field cannot be empty.')
+				return
+			}
+
+			if (newAddress) {
+				axios
+					.post('/addresses/add', addressData)
+					.then(response => {
+						setAddresses([...addresses, response.data])
+						setNewAddress('')
+					})
+					.catch(error => {
+						console.error('Failed to add new address:', error)
+					})
+			}
 		}
 	}
-
-	// Tymczasowe adresy na potrzeby stylizacji i implementacji logiki
-	const [addresses, setAddresses] = useState(
-		currentUser?.addresses || ['123 Main St, Anytown, AN', '456 Maple Ave, Othertown, OT']
-	)
-	const [newAddress, setNewAddress] = useState('')
 
 	return (
 		<div className='select-address-container'>
 			<h2>Select your delivery address</h2>
 			{addresses.map((address, index) => (
 				<div key={index} className='address-item' onClick={() => handleSelectAddress(address)}>
-					{address}
+					{address.address}
 				</div>
 			))}
 			<input type='text' placeholder='New Address' value={newAddress} onChange={e => setNewAddress(e.target.value)} />

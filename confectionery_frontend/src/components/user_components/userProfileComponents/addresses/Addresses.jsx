@@ -177,7 +177,7 @@ const Addresses = () => {
 		if (newAddress.trim()) {
 			const addressData = {
 				address: newAddress,
-				userId: user.id, // assuming `user` comes from a context or similar
+				userId: user.id, 
 			}
 
 			if (!newAddress.trim()) {

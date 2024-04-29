@@ -4,6 +4,7 @@ import axios from '../../configuration/axiosConfig'
 import { FaHeart } from 'react-icons/fa'
 import { AuthContext, useAuth } from '../../context/AuthContext'
 import '../CSS/Product.css'
+import { toast } from 'react-toastify'
 
 const Product = ({ fetchCartItemCount }) => {
 	const navigate = useNavigate()
@@ -77,7 +78,7 @@ const Product = ({ fetchCartItemCount }) => {
 				},
 			})
 			if (response.status === 200) {
-				alert('Product added to favorites successfully')
+				toast.success('Product added to favorites successfully!')
 			} else {
 				alert('Failed to add to favorites: ' + response.statusText)
 			}
@@ -96,7 +97,7 @@ const Product = ({ fetchCartItemCount }) => {
 		try {
 			const response = await axios.post(`cart/add/${user.id}/${product.id}/${quantity}`)
 			if (response.status === 200) {
-				alert('Product added to cart successfully')
+				toast.success('Product added to cart successfully!')
 				window.dispatchEvent(new CustomEvent('updateCartCount'));
 			} else {
 				alert('Failed to add product to cart: ' + response.statusText)
