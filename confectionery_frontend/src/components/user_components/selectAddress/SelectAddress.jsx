@@ -24,10 +24,6 @@ const SelectAddress = () => {
 		}
 	}, [user])
 
-	const handleSelectAddress = address => {
-		console.log('Selected address:', address)
-		navigate('/summary')
-	}
 
 	const handleAddNewAddress = () => {
 		if (newAddress.trim()) {
@@ -53,6 +49,11 @@ const SelectAddress = () => {
 					})
 			}
 		}
+	}
+
+	const handleSelectAddress = address => {
+		console.log('Selected address:', address)
+		navigate('/summary', { state: { selectedAddress: address } })
 	}
 
 	return (

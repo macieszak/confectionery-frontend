@@ -107,12 +107,11 @@ const Addresses = () => {
 	const [newAddress, setNewAddress] = useState('')
 
 	useEffect(() => {
-		// Fetch addresses when the component mounts
 		if (user?.id) {
 			axios
 				.get(`addresses/user/${user.id}`)
 				.then(response => {
-					console.log('Loaded addresses:', response.data) // Check what's actually loaded
+					console.log('Loaded addresses:', response.data)
 					setAddresses(response.data)
 				})
 				.catch(error => {
@@ -137,24 +136,24 @@ const Addresses = () => {
 			return
 		}
 
-		console.log('Updating address with ID: ', addresses[index].id) // Log the ID to debug
+		console.log('Updating address with ID: ', addresses[index].id)
 
 		const updatedAddress = {
 			address: editedAddress,
-			userId: user.id, // Ensure ID is being passed correctly
+			userId: user.id,
 		}
 
 		axios
 			.put(`/addresses/update/${addresses[index].id}`, updatedAddress)
 			.then(response => {
 				const updatedAddresses = [...addresses]
-				updatedAddresses[index] = response.data // assuming the response data is the updated address object
+				updatedAddresses[index] = response.data
 				setAddresses(updatedAddresses)
 				setEditIndex(-1)
 				toast.success('Address updated successfully!')
 			})
 			.catch(error => {
-				console.error('Error updating address:', error.response || error) // More detailed error logging
+				console.error('Error updating address:', error.response || error)
 				toast.error(`Failed to update address: ${error.response?.data?.message || error.message}`)
 			})
 	}
@@ -177,7 +176,7 @@ const Addresses = () => {
 		if (newAddress.trim()) {
 			const addressData = {
 				address: newAddress,
-				userId: user.id, 
+				userId: user.id,
 			}
 
 			if (!newAddress.trim()) {

@@ -1,39 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import productsData from '../../assets/data/productsData'
-import '../CSS/SummaryPage.css'
+import React, { useState, useEffect, useContext } from 'react'
+import axios from '../../configuration/axiosConfig'
+import { useNavigate, useLocation } from 'react-router-dom'
 import SummaryCartItem from '../../components/user_components/summaryCartItem/SummaryCartItem'
 import OrderSummaryFinal from '../../components/user_components/orderSummaryFinal/OrderSummaryFinal'
+import { AuthContext } from '../../context/AuthContext'
+import '../CSS/SummaryPage.css'
 
 const SummaryPage = () => {
-	const [cartItems, setCartItems] = useState(
-		productsData.map(product => ({
-			...product,
-			quantity: 1, // W rzeczywistości powinno to pochodzić z globalnego stanu koszyka
-		}))
-	)
-
-	// Załóżmy, że wybrany adres został zapisany w stanie
-	const [selectedAddress, setSelectedAddress] = useState('123 Main St, Anytown, AN')
-
 	const navigate = useNavigate()
+	const location = useLocation()
+	const { user } = useContext(AuthContext)
+	const [cartItems, setCartItems] = useState([])
+	const [selectedAddress, setSelectedAddress] = useState(location.state?.selectedAddress || 'No address selected') // Użyj przekazanego adresu lub wartości domyślnej
+	const [loading, setLoading] = useState(true)
 
-	const handleCheckout = () => {
-		// Przykładowy stan konta użytkownika
-		const userBalance = 10000 // Powinno pochodzić z kontekstu użytkownika
 
-		if (total > userBalance) {
-			alert('Insufficient funds. Please top up your wallet.')
-			navigate('/user/wallet') // Przekierowanie do portfela
-		} else {
-			console.log('Przetwarzanie zamówienia...')
-			// Tutaj symulacja potwierdzenia zamówienia i przekierowanie do historii zamówień
-			navigate('/user/order-history', { state: { message: 'Success! Thank you for your order.' } })
+	const fetchCartItems = () => {
+		if (user) {
+			axios
+				.get(`/cart/items/${user.id}`)
+				.then(response => {
+					setCartItems(
+						response.data.map(item => ({
+							...item,
+							imageUrl: item.image.name,
+						}))
+					)
+					setLoading(false)
+				})
+				.catch(error => console.error('Failed to fetch cart items:', error))
 		}
 	}
 
+	useEffect(() => {
+		fetchCartItems()
+	}, [user])
+
 	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-	const delivery = 5 // Przykładowy koszt dostawy
+	const delivery = 5
 	const total = subtotal + delivery
 
 	return (
@@ -41,16 +45,15 @@ const SummaryPage = () => {
 			<div className='summary-cart-items-list'>
 				<h2>Order Summary</h2>
 				{cartItems.map(item => (
-					<SummaryCartItem key={item.id} item={item} />
+					<SummaryCartItem key={item.cartItemId} {...item} />
 				))}
 			</div>
 			<div className='summary-order-summary'>
-				<OrderSummaryFinal subtotal={subtotal} delivery={delivery} total={total} onNextStep={handleCheckout} />
-
+				<OrderSummaryFinal subtotal={subtotal} delivery={delivery} total={total} />
 				<div className='selected-address'>
 					<h2>Selected Delivery Address</h2>
-					<p>{selectedAddress}</p>
-					<button onClick={handleCheckout} className='checkout-button'>
+					<p>{selectedAddress.address}</p>
+					<button className='checkout-button' onClick={() => navigate('/confirm')}>
 						Confirm Order
 					</button>
 				</div>
