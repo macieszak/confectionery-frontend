@@ -1,73 +1,125 @@
-import React, { useState, useEffect } from 'react'
-import '../CSS/Cart.css'
-import productsData from '../../assets/data/productsData'
+import React, { useState, useEffect, useContext } from 'react'
+import axios from '../../configuration/axiosConfig'
 import OrderSummary from '../../components/user_components/orderSummary/OrderSummary'
 import CartItem from '../../components/user_components/cartItem/CartItem'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import '../CSS/Cart.css'
+import { AuthContext } from '../../context/AuthContext'
 
-const Cart = ({ }) => {
-	const initialCartItems = productsData.map(product => ({
-		...product,
-		quantity: 1,
-	}))
-
-	const [cartItems, setCartItems] = useState(initialCartItems)
-
+const Cart = ({}) => {
+	const navigate = useNavigate()
+	const { user } = useContext(AuthContext)
+	const [cartItems, setCartItems] = useState([])
+	const [visibleItems, setVisibleItems] = useState(5)
 	const [showAll, setShowAll] = useState(false)
-
-	const decrementQuantity = productId => {
-		setCartItems(currentItems =>
-			currentItems.map(item =>
-				item.id === productId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-			)
-		)
-	}
-
-	const incrementQuantity = productId => {
-		setCartItems(currentItems =>
-			currentItems.map(item => (item.id === productId ? { ...item, quantity: item.quantity + 1 } : item))
-		)
-	}
-
-	const visibleItems = showAll ? cartItems : cartItems.slice(0, 5)
-
-	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
-
-	const delivery = 5
-
-	const total = subtotal + delivery
-
-	const removeItem = productId => {
-		setCartItems(currentItems => currentItems.filter(item => item.id !== productId))
-	}
+	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		// Oblicz nową łączną ilość produktów
-		const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-		
-	}, [cartItems])
+		if (user) {
+			axios
+				.get(`/cart/items/${user.id}`)
+				.then(response => {
+					setCartItems(
+						response.data.map(item => ({
+							...item,
+							imageUrl: item.image.name,
+						}))
+					)
+				})
+				.catch(error => {
+					console.error('Failed to fetch cart items:', error)
+				})
+		}
+	}, [user])
 
-	const navigate = useNavigate()
+	const fetchCartItems = () => {
+		axios
+			.get(`/cart/items/${user.id}`)
+			.then(response => {
+				setCartItems(
+					response.data.map(item => ({
+						...item,
+						imageUrl: item.image.name,
+					}))
+				)
+				setLoading(false)
+			})
+			.catch(error => {
+				console.error('Failed to fetch cart items:', error)
+				setLoading(false)
+			})
+	}
+
+	const incrementQuantity = cartItemId => {
+		axios
+			.post(`/cart/increment/${user.id}/${cartItemId}`)
+			.then(() => {
+				fetchCartItems()
+				window.dispatchEvent(new CustomEvent('cartUpdated'));
+			})
+			.catch(error => {
+				console.error('Failed to increment quantity:', error)
+			})
+	}
+
+	const decrementQuantity = cartItemId => {
+		axios
+			.post(`/cart/decrement/${user.id}/${cartItemId}`)
+			.then(() => {
+				fetchCartItems()
+				window.dispatchEvent(new CustomEvent('cartUpdated'));
+			})
+			.catch(error => {
+				console.error('Failed to decrement quantity:', error)
+			})
+	}
+
+	const removeItem = cartItemId => {
+		axios
+			.delete(`/cart/remove/${user.id}/${cartItemId}`)
+			.then(() => {
+				fetchCartItems()
+				window.dispatchEvent(new CustomEvent('cartUpdated'));
+			})
+			.catch(error => {
+				console.error('Failed to remove item from cart:', error)
+			})
+	}
+
+	const showMoreItems = () => {
+		setVisibleItems(prevVisible => prevVisible + 5)
+	}
+
+	const toggleShowMore = () => {
+		setShowAll(!showAll)
+		setVisibleItems(showAll ? 5 : cartItems.length)
+	}
+
+	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+	const delivery = 5
+	const total = subtotal + delivery
 
 	const handleNextStep = () => {
-		navigate('/delivery') // Zaktualizowana ścieżka
+		navigate('/delivery')
 	}
 
 	return (
 		<div className='cart-container'>
 			<div className='cart-items-list'>
 				<h2>Shopping cart</h2>
-				{visibleItems.map(item => (
+				{cartItems.slice(0, visibleItems).map(item => (
 					<CartItem
-						key={item.id}
-						item={item}
+						key={item.cartItemId}
+						{...item}
+						removeItem={removeItem}
 						decrementQuantity={decrementQuantity}
 						incrementQuantity={incrementQuantity}
-						removeItem={removeItem}
 					/>
 				))}
+
 				{cartItems.length > 5 && (
-					<button className='show-more' onClick={() => setShowAll(!showAll)}>
+					<button className='show-more' onClick={toggleShowMore}>
 						{showAll ? 'Show less' : 'Show more'}
 					</button>
 				)}

@@ -30,17 +30,7 @@ const SummaryPage = () => {
 			// Tutaj symulacja potwierdzenia zamówienia i przekierowanie do historii zamówień
 			navigate('/user/order-history', { state: { message: 'Success! Thank you for your order.' } })
 		}
-
-		// // Logika zamówienia
-		// console.log('Przetwarzanie zamówienia...')
-		// navigate('/order-confirmation') // Przeniesienie do strony potwierdzenia
 	}
-
-	// useEffect(() => {
-	// 	// Aktualizacja całkowitej liczby przedmiotów na potrzeby koszyka
-	// 	const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0)
-	// 	updateCartItemCount(itemCount)
-	// }, [cartItems, updateCartItemCount])
 
 	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
 	const delivery = 5 // Przykładowy koszt dostawy

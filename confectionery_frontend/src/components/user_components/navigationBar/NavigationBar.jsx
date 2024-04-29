@@ -38,6 +38,29 @@ const NavigationBar = ({ menu, setMenu }) => {
 		}
 	}, [user])
 
+	useEffect(() => {
+		const updateCartCount = () => {
+		  if (user) {
+			axios.get(`/cart/count/${user.id}`)
+			  .then(response => {
+				setCartItemCount(response.data);
+			  })
+			  .catch(error => {
+				console.error('Error fetching cart count:', error);
+				setCartItemCount(0);
+			  });
+		  }
+		};
+	  
+		// Dodanie nasłuchiwania
+		window.addEventListener('cartUpdated', updateCartCount);
+	  
+		// Funkcja sprzątająca
+		return () => {
+		  window.removeEventListener('cartUpdated', updateCartCount);
+		};
+	  }, [user]);
+
 	return (
 		<div className='navigation-bar'>
 			<div className='nav-logo'>
