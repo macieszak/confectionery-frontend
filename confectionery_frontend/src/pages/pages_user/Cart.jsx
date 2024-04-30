@@ -104,6 +104,19 @@ const Cart = ({}) => {
 		navigate('/delivery')
 	}
 
+
+	useEffect(() => {
+		const handleCartUpdate = () => {
+		  setCartItems([]);  // Clear the cart items or fetch new ones if needed
+		};
+	  
+		window.addEventListener('cartCleared', handleCartUpdate);
+	  
+		return () => {
+		  window.removeEventListener('cartCleared', handleCartUpdate);
+		};
+	  }, []);
+
 	return (
 		<div className='cart-container'>
 			<div className='cart-items-list'>

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import SummaryCartItem from '../../components/user_components/summaryCartItem/SummaryCartItem'
 import OrderSummaryFinal from '../../components/user_components/orderSummaryFinal/OrderSummaryFinal'
 import { AuthContext } from '../../context/AuthContext'
+import { toast } from 'react-toastify'
 import '../CSS/SummaryPage.css'
 
 const SummaryPage = () => {
@@ -11,9 +12,14 @@ const SummaryPage = () => {
 	const location = useLocation()
 	const { user } = useContext(AuthContext)
 	const [cartItems, setCartItems] = useState([])
-	const [selectedAddress, setSelectedAddress] = useState(location.state?.selectedAddress || 'No address selected') // Użyj przekazanego adresu lub wartości domyślnej
+	const [selectedAddress, setSelectedAddress] = useState(location.state?.selectedAddress || 'No address selected')
 	const [loading, setLoading] = useState(true)
 
+	const [isOrdering, setIsOrdering] = useState(false)
+
+	const clearCart = () => {
+		window.dispatchEvent(new CustomEvent('cartCleared'))
+	}
 
 	const fetchCartItems = () => {
 		if (user) {
@@ -36,6 +42,40 @@ const SummaryPage = () => {
 		fetchCartItems()
 	}, [user])
 
+	const confirmOrder = () => {
+		if (isOrdering) return // Blokada przed kolejnymi wywołaniami
+		setIsOrdering(true)
+		setLoading(true)
+
+		const orderRequest = {
+			userId: user.id,
+			addressId: selectedAddress.id,
+			cartItemIds: cartItems.map(item => item.cartItemId),
+		}
+
+		axios
+			.post('/orders/create', orderRequest)
+			.then(response => {
+				navigate('/user/order-history')
+				toast.success('Order placed successfully!')
+				clearCart()
+			})
+			.catch(error => {
+				console.error('Error creating order:', error)
+				if (error.response && error.response.data.includes('Insufficient funds')) {
+					navigate('/user/wallet')
+					toast.error('Insufficient funds. Please recharge your wallet.')
+				} else {
+					toast.error('Failed to place the order. Please try again.')
+				}
+				return
+			})
+			.finally(() => {
+				setIsOrdering(false)
+				setLoading(false)
+			})
+	}
+
 	const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
 	const delivery = 5
 	const total = subtotal + delivery
@@ -53,7 +93,7 @@ const SummaryPage = () => {
 				<div className='selected-address'>
 					<h2>Selected Delivery Address</h2>
 					<p>{selectedAddress.address}</p>
-					<button className='checkout-button' onClick={() => navigate('/confirm')}>
+					<button className='checkout-button' onClick={confirmOrder}>
 						Confirm Order
 					</button>
 				</div>

@@ -10,7 +10,7 @@ const NavigationBar = ({ menu, setMenu }) => {
 	const { user, logout } = useAuth()
 
 	const [cartItemCount, setCartItemCount] = useState(0)
-	// Function to fetch the cart item count
+
 	const fetchCartItemCount = async () => {
 		if (user) {
 			try {
@@ -28,11 +28,11 @@ const NavigationBar = ({ menu, setMenu }) => {
 	useEffect(() => {
 		fetchCartItemCount()
 
-		// Set up a listener for custom cart update events
+		
 		const handleCartUpdate = () => fetchCartItemCount()
 		window.addEventListener('updateCartCount', handleCartUpdate)
 
-		// Clean up the event listener
+		
 		return () => {
 			window.removeEventListener('updateCartCount', handleCartUpdate)
 		}
@@ -40,26 +40,28 @@ const NavigationBar = ({ menu, setMenu }) => {
 
 	useEffect(() => {
 		const updateCartCount = () => {
-		  if (user) {
-			axios.get(`/cart/count/${user.id}`)
-			  .then(response => {
-				setCartItemCount(response.data);
-			  })
-			  .catch(error => {
-				console.error('Error fetching cart count:', error);
-				setCartItemCount(0);
-			  });
-		  }
-		};
-	  
-		// Dodanie nasłuchiwania
-		window.addEventListener('cartUpdated', updateCartCount);
-	  
-		// Funkcja sprzątająca
+			if (user) {
+				axios
+					.get(`/cart/count/${user.id}`)
+					.then(response => {
+						setCartItemCount(response.data)
+					})
+					.catch(error => {
+						console.error('Error fetching cart count:', error)
+						setCartItemCount(0)
+					})
+			}
+		}
+
+	
+		window.addEventListener('cartUpdated', updateCartCount)
+		window.addEventListener('cartCleared', () => setCartItemCount(0))
+	
 		return () => {
-		  window.removeEventListener('cartUpdated', updateCartCount);
-		};
-	  }, [user]);
+			window.removeEventListener('cartUpdated', updateCartCount)
+			window.removeEventListener('cartCleared', () => setCartItemCount(0))
+		}
+	}, [user])
 
 	return (
 		<div className='navigation-bar'>
@@ -99,7 +101,6 @@ const NavigationBar = ({ menu, setMenu }) => {
 							<FaShoppingCart className='cart-icon' />
 						</Link>
 						{cartItemCount > 0 && <div className='nav-cart-count'>{cartItemCount}</div>}
-					
 					</>
 				) : (
 					<Link to='/login'>

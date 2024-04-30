@@ -1,12 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from '../../../../configuration/axiosConfig';
 import { AuthContext } from '../../../../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 import './Wallet.css'
 
 const Wallet = () => {
 	const { user } = useContext(AuthContext); 
     const [amount, setAmount] = useState('');
     const [balance, setBalance] = useState(0);
+    const location = useLocation();
+    const message = location.state?.message;
+  
+	useEffect(() => {
+	  if (message) {
+		alert(message);
+	  }
+	}, [message]);
 
     useEffect(() => {
         fetchBalance();
