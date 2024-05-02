@@ -1,77 +1,76 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '../CSS/AdminUsers.css'
-
-const initialUsers = [
-	{ id: 1, name: 'John Doe', email: 'john@example.com', money: '100.00', orders: 5, status: 'Active' },
-	{ id: 2, name: 'Janesss Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 3, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 4, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 5, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 6, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-	{ id: 7, name: 'Jane Doe', email: 'jane@example.com', money: '150.50', orders: 2, status: 'Inactive' },
-]
+import React, { useState, useEffect } from 'react';
+import axios from '../../configuration/axiosConfig'; // Adjust the import path as necessary
+import { useNavigate } from 'react-router-dom';
+import '../CSS/AdminUsers.css';
 
 const AdminUsers = () => {
-	const [users, setUsers] = useState(initialUsers)
-	const navigate = useNavigate()
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
-	const toggleUserStatus = userId => {
-		const updatedUsers = users.map(user =>
-			user.id === userId ? { ...user, status: user.status === 'Active' ? 'Inactive' : 'Active' } : user
-		)
-		setUsers(updatedUsers)
-	}
+    useEffect(() => {
+        // Fetch users when the component is mounted
+        axios.get('/admin/users/all')
+            .then(response => {
+                setUsers(response.data); // Set users state with the fetched data
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+                // Handle errors here, e.g., unauthorized access, server issues, etc.
+            });
+    }, []);
 
-	const viewUserOrders = userId => {
-		navigate(`/admin/users/${userId}/orders`)
-	}
+    const toggleUserStatus = userId => {
+        const updatedUsers = users.map(user =>
+            user.userId === userId ? { ...user, accountStatus: user.accountStatus === 'Active' ? 'Inactive' : 'Active' } : user
+        );
+        setUsers(updatedUsers);
+        // Potentially send a request to the backend to update the user status
+    };
 
-	return (
-		<div className='admin-users'>
-			<h2>Users Management</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Customer Name</th>
-						<th>Email</th>
-						<th>Amount of Money</th>
-						<th>Number of Orders</th>
-						<th>Account Status</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					{users.map(user => (
-						<tr key={user.id}>
-							<td>{user.name}</td>
-							<td>{user.email}</td>
-							<td>{user.money}</td>
-							<td>{user.orders}</td>
-							<td>{user.status}</td>
-							<td>
-								<div className='action-buttons'>
-									<button
-										onClick={() => toggleUserStatus(user.id)}
-										className={user.status === 'Active' ? 'button-block' : 'button-unblock'}>
-										{user.status === 'Active' ? 'Block' : 'Unblock'}
-									</button>
-									<button className='view-orders-button' onClick={() => viewUserOrders(user.id)}>
-										View Orders
-									</button>
-								</div>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	)
+    const viewUserOrders = userId => {
+        navigate(`/admin/users/${userId}/orders`);
+    };
+
+    return (
+        <div className='admin-users'>
+            <h2>Users Management</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Amount of Money</th>
+                        <th>Number of Orders</th>
+                        <th>Account Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map(user => (
+                        <tr key={user.userId}>
+                            <td>{user.firstName} {user.lastName}</td>
+                            <td>{user.mail}</td>
+                            <td>{user.amountOfMoney}</td>
+                            <td>{user.numberOfOrders}</td>
+                            <td>{user.accountStatus}</td>
+                            <td>
+                                <div className='action-buttons'>
+                                    <button
+                                        onClick={() => toggleUserStatus(user.userId)}
+                                        className={user.accountStatus === 'Active' ? 'button-block' : 'button-unblock'}>
+                                        {user.accountStatus === 'Active' ? 'Block' : 'Unblock'}
+                                    </button>
+                                    <button className='view-orders-button' onClick={() => viewUserOrders(user.userId)}>
+                                        View Orders
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
-export default AdminUsers
+export default AdminUsers;
