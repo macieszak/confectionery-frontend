@@ -43,6 +43,11 @@ const SummaryPage = () => {
 	}, [user])
 
 	const confirmOrder = () => {
+		if (cartItems.length === 0) {
+			toast.error('Your cart is empty. Add some products before placing an order.');
+			return; // Przerywa dalsze wykonywanie funkcji
+		}
+
 		if (isOrdering) return // Blokada przed kolejnymi wywołaniami
 		setIsOrdering(true)
 		setLoading(true)

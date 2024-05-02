@@ -1,69 +1,69 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import './OrderHistory.css'
-import { useLocation } from 'react-router-dom';
+import { useAuth } from '../../../../context/AuthContext'
+import axios from '../../../../configuration/axiosConfig'
+import { format } from 'date-fns'
 
 const OrderHistory = () => {
-	// Przykładowe dane, które będą później pobierane z API
-	const orders = [
-		{ id: 1, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 1', 'Item 2'] },
-		{ id: 2, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 3, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 4, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 5, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 6, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 7, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 8, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 9, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 10, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 11, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 12, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 13, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		{ id: 14, status: 'xxx', totalCost: 'xxx', purchasedItems: ['Item 3', 'Item 4'] },
-		// ... więcej zamówień
-	]
-
+	const [orders, setOrders] = useState([])
 	const [visibleOrders, setVisibleOrders] = useState(3)
+	const [loading, setLoading] = useState(true)
+	const { user } = useAuth()
+
+	useEffect(() => {
+		if (user) {
+			setLoading(true)
+			axios
+				.get(`/orders/user/${user.id}`)
+				.then(response => {
+					setOrders(response.data)
+					setLoading(false)
+				})
+				.catch(error => {
+					console.error('Failed to fetch orders', error)
+					setLoading(false)
+				})
+		}
+	}, [user])
 
 	const showMoreOrders = () => {
-		setVisibleOrders(prevVisibleOrders => prevVisibleOrders + 3) // Pokazuje 3 więcej zamówień
+		setVisibleOrders(prevVisibleOrders => prevVisibleOrders + 3)
 	}
 
+	if (!user) {
+		return <div>Please log in to view your order history.</div>
+	}
 
-	const location = useLocation();
-	const message = location.state?.message;
-  
-	useEffect(() => {
-	  if (message) {
-		alert(message);
-	  }
-	}, [message]);
+	if (loading) {
+		return <div>Loading...</div>
+	}
 
 	return (
 		<div className='orderHistoryContainer'>
-			<h2>Order history</h2>
-			{orders.slice(0, visibleOrders).map((order, index) => (
-				<div className='orderItem' key={order.id}>
+			<h2>Order History</h2>
+			{orders.slice(0, visibleOrders).map(order => (
+				<div className='orderItem' key={order.orderId}>
 					<div>
-						<span className='orderLabel'>Numer zamówienia:</span>
-						<span className='orderValue'>{order.id}</span>
-					</div>
-					<div>
-						<span className='orderLabel'>Status zamówienia:</span>
+						<span className='orderLabel'>Order Status:</span>
 						<span className='orderValue'>{order.status}</span>
 					</div>
 					<div>
-						<span className='orderLabel'>Całkowity koszt:</span>
-						<span className='orderValue'>{order.totalCost}</span>
+						<span className='orderLabel'>Total Cost:</span>
+						<span className='orderValue'>{order.totalPrice.toFixed(2)}</span>
 					</div>
 					<div>
-						<span className='orderLabel'>Lista zakupionych przedmiotów:</span>
-						<span className='orderValue'>{order.purchasedItems.join(', ')}</span>
+						<span className='orderLabel'>Purchased Items:</span>
+						<span className='orderValue'>{order.products.map(product => product.name).join(', ')}</span>
+					</div>
+					<div>
+						<span className='orderLabel'>Order Date:</span>
+						<span className='orderValue'>{format(new Date(order.orderDate), 'yyyy-MM-dd HH:mm')}</span>
 					</div>
 				</div>
 			))}
 			{visibleOrders < orders.length && (
 				<button onClick={showMoreOrders} className='showMoreButton'>
-					Pokaż więcej
+					Show More
 				</button>
 			)}
 		</div>
