@@ -61,8 +61,8 @@ const AdminUsers = () => {
                                         {user.accountStatus === 'Active' ? 'Block' : 'Unblock'}
                                     </button>
                                     <button className='view-orders-button' onClick={() => viewUserOrders(user.userId)}>
-                                        View Orders
-                                    </button>
+                                    View Orders
+                                </button>
                                 </div>
                             </td>
                         </tr>
