@@ -1,60 +1,45 @@
 import React, { useState, useEffect } from 'react'
+import axios from '../../configuration/axiosConfig'
 import '../CSS/AdminOrders.css'
-
-const sampleOrdersData = [
-	{
-		orderId: 1,
-		userName: 'John Doe',
-		userEmail: 'john@example.com',
-		date: '2022-01-01',
-		total: 120.0,
-		status: 'Completed',
-	},
-	{
-		orderId: 2,
-		userName: 'Jane Doe',
-		userEmail: 'jane@example.com',
-		date: '2022-01-15',
-		total: 75.5,
-		status: 'Pending',
-	},
-	{
-		orderId: 3,
-		userName: 'Jane Doe',
-		userEmail: 'jane@example.com',
-		date: '2022-01-15',
-		total: 75.5,
-		status: 'Pending',
-	},
-	{
-		orderId: 4,
-		userName: 'Jane Doe',
-		userEmail: 'jane@example.com',
-		date: '2022-01-15',
-		total: 75.5,
-		status: 'Pending',
-	},
-	{
-		orderId: 5,
-		userName: 'Jane Doe',
-		userEmail: 'jane@example.com',
-		date: '2022-01-15',
-		total: 75.5,
-		status: 'Pending',
-	},
-]
 
 const AdminOrders = () => {
 	const [orders, setOrders] = useState([])
-
-	useEffect(() => {
-		setOrders(sampleOrdersData)
-	}, [])
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(null)
 
 	const changeOrderStatus = (orderId, newStatus) => {
-		const updatedOrders = orders.map(order => (order.orderId === orderId ? { ...order, status: newStatus } : order))
-		setOrders(updatedOrders)
+		axios
+			.post(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
+			.then(response => {
+				const updatedOrders = orders.map(order => {
+					if (order.orderId === orderId) {
+						return { ...order, status: response.data.status }
+					}
+					return order
+				})
+				setOrders(updatedOrders)
+			})
+			.catch(error => {
+				console.error('Error updating order status:', error)
+			})
 	}
+
+	useEffect(() => {
+		axios
+			.get('/admin/orders/all')
+			.then(response => {
+				setOrders(response.data)
+				setLoading(false)
+			})
+			.catch(error => {
+				console.error('Error fetching orders:', error)
+				setError('Failed to fetch orders')
+				setLoading(false)
+			})
+	}, [])
+
+	if (loading) return <div>Loading...</div>
+	if (error) return <div>Error: {error}</div>
 
 	return (
 		<div className='admin-users-orders'>
@@ -75,16 +60,16 @@ const AdminOrders = () => {
 					{orders.map(order => (
 						<tr key={order.orderId}>
 							<td>{order.orderId}</td>
-							<td>{order.userName}</td>
-							<td>{order.userEmail}</td>
-							<td>{order.date}</td>
-							<td>{order.total} zł</td>
+							<td>{order.firstName + ' ' + order.lastName}</td>
+							<td>{order.email}</td>
+							<td>{new Date(order.orderDate).toLocaleString()}</td>
+							<td>{order.totalAmount} zł</td>
 							<td>{order.status}</td>
 							<td>
 								<select value={order.status} onChange={e => changeOrderStatus(order.orderId, e.target.value)}>
-									<option value='Pending'>Pending</option>
-									<option value='Completed'>Completed</option>
-									<option value='Canceled'>Canceled</option>
+									<option value='PENDING'>PENDING</option>
+									<option value='COMPLETED'>COMPLETED</option>
+									<option value='CANCELLED'>CANCELLED</option>
 								</select>
 							</td>
 						</tr>

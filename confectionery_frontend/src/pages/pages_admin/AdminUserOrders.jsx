@@ -7,6 +7,23 @@ const AdminUserOrders = () => {
 	const { userId } = useParams()
 	const [orders, setOrders] = useState([])
 
+	const changeOrderStatus = (orderId, newStatus) => {
+		axios
+			.post(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
+			.then(response => {
+				const updatedOrders = orders.map(order => {
+					if (order.orderId === orderId) {
+						return { ...order, status: response.data.status }
+					}
+					return order
+				})
+				setOrders(updatedOrders)
+			})
+			.catch(error => {
+				console.error('Error updating order status:', error)
+			})
+	}
+
 	useEffect(() => {
 		axios
 			.get(`/admin/users/${userId}/orders`)
@@ -36,18 +53,16 @@ const AdminUserOrders = () => {
 					{orders.map(order => (
 						<tr key={order.orderId}>
 							<td>{order.orderId}</td>
-							{/* <td>
-								{order.firstName} {order.lastName}
-							</td> */}
+
 							<td>{new Date(order.orderDate).toLocaleString()}</td>
 							<td>{`${order.totalAmount} zł`}</td>
 							<td>{order.status}</td>
 							<td>
-								{/* <select value={order.status} onChange={e => changeOrderStatus(order.orderId, e.target.value)}>
-									<option value='Pending'>Pending</option>
-									<option value='Completed'>Completed</option>
-									<option value='Canceled'>Canceled</option>
-								</select> */}
+								<select value={order.status} onChange={e => changeOrderStatus(order.orderId, e.target.value)}>
+									<option value='PENDING'>PENDING</option>
+									<option value='COMPLETED'>COMPLETED</option>
+									<option value='CANCELLED'>CANCELLED</option>
+								</select>
 							</td>
 						</tr>
 					))}
