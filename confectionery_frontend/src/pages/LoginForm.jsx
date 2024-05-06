@@ -44,7 +44,11 @@ const LoginForm = () => {
 			.catch(error => {
 				if (error.response && error.response.status === 401) {
 					toast.error('Invalid email or password. Please try again.')
-				} else {
+				}
+				else if (error.response && error.response.status === 400) {
+					toast.error('Account is inactive. Please contact support.')
+				}
+				else {
 					toast.error('Login failed: ' + (error.response?.data?.error || error.message))
 				}
 				setLoading(false)
