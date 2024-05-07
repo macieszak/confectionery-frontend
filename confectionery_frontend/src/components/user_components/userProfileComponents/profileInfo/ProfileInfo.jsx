@@ -51,14 +51,17 @@ const ProfileInfo = () => {
 			localStorage.setItem('user', JSON.stringify(updatedUser))
 			toast.success('Profile updated successfully!')
 		} catch (error) {
-			if (
-				error.response &&
-				error.response.status === 409 &&
-				error.response.data.error.includes('Email already in use. Please use a different email.')
-			) {
-				toast.error('This email is already in use. Try another.')
+			if (error.response) {
+				const status = error.response.status
+				const message = error.response.data.message || error.response.statusText
+
+				if (status === 400 && message.includes('Email already in use')) {
+					toast.error('This email is already in use. Please use a different email.')
+				} else {
+					toast.error(`Failed to update profile. Error: ${status} ${message}`)
+				}
 			} else {
-				toast.error(`Failed to update profile. Error: ${error.response?.status} ${error.response?.statusText}`)
+				toast.error('Network error or no server response.')
 			}
 		}
 	}
