@@ -3,12 +3,16 @@ import { AuthContext, useAuth } from '../../../../context/AuthContext'
 import axios from '../../../../configuration/axiosConfig'
 import { toast } from 'react-toastify'
 import { useFormik } from 'formik'
+import { useNavigate } from 'react-router-dom'
 import './ProfileInfo.css'
 
 import { useForm } from 'react-hook-form'
 
 const ProfileInfo = () => {
+	
 	const { user, setUser } = useAuth()
+	const { logout } = useAuth();
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -62,6 +66,22 @@ const ProfileInfo = () => {
 		}
 	}
 
+    const handleDeleteAccount = () => {
+        if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+            axios.delete(`/user/delete/${user.id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
+            })
+            .then(() => {
+                toast.success("Account deleted successfully!");
+                logout();  
+                navigate('/login');  
+            })
+            .catch(error => {
+                toast.error("Failed to delete account.");
+            });
+        }
+    };
+
 	return (
 		<div className='profileInfoContainer'>
 			<h2>Profile Information</h2>
@@ -102,7 +122,10 @@ const ProfileInfo = () => {
 				/>
 				{errors.password && <p>{errors.password.message}</p>}
 
-				<button type='submit'>Save Changes</button>
+				<button type='submit' className='saveChangesButton'>Save Changes</button>
+				<button type='button' className='deleteAccountButton' onClick={handleDeleteAccount}>
+                    Delete Account
+                </button>
 			</form>
 		</div>
 	)

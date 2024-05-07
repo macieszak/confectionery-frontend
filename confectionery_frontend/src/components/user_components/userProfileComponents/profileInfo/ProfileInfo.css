@@ -35,7 +35,7 @@
 	font-size: 1em;
 }
 
-.profileInfoContainer button {
+.saveChangesButton {
 	width: 100%;
 	padding: 15px;
 	background-color: #d9a571;
@@ -48,8 +48,26 @@
 	margin-bottom: 30px;
 }
 
-.profileInfoContainer button:hover {
+.saveChangesButton:hover {
 	background-color: #c98a5f;
+}
+
+
+.deleteAccountButton {
+    background-color: #d9534f; 
+	width: 100%;
+	padding: 15px;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	cursor: pointer;
+	margin-top: 10px;
+	font-size: 1em;
+	margin-bottom: 30px;
+}
+
+.deleteAccountButton:hover {
+    background-color: #c9302c; 
 }
 
 
