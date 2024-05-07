@@ -1,62 +1,62 @@
-import React, { useState, useEffect, useContext } from 'react';
-import axios from '../../../../configuration/axiosConfig';
-import { AuthContext } from '../../../../context/AuthContext';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react'
+import axios from '../../../../configuration/axiosConfig'
+import { AuthContext } from '../../../../context/AuthContext'
+import { useLocation } from 'react-router-dom'
 import './Wallet.css'
 
 const Wallet = () => {
-	const { user } = useContext(AuthContext); 
-    const [amount, setAmount] = useState('');
-    const [balance, setBalance] = useState(0);
-    const location = useLocation();
-    const message = location.state?.message;
-  
-	useEffect(() => {
-	  if (message) {
-		alert(message);
-	  }
-	}, [message]);
+	const { user } = useContext(AuthContext)
+	const [amount, setAmount] = useState('')
+	const [balance, setBalance] = useState(0)
+	const location = useLocation()
+	const message = location.state?.message
 
-    useEffect(() => {
-        fetchBalance();
-    }, [user]);
+	useEffect(() => {
+		if (message) {
+			alert(message)
+		}
+	}, [message])
+
+	useEffect(() => {
+		fetchBalance()
+	}, [user])
 
 	const fetchBalance = () => {
-        axios.get(`/wallet/balance/${user.id}`)
-            .then(response => {
-                setBalance(response.data);
-            })
-            .catch(error => {
-                console.error('Failed to fetch balance:', error);
-            });
-    };
+		axios
+			.get(`/users/${user.id}/balance`)
+			.then(response => {
+				setBalance(response.data)
+			})
+			.catch(error => {
+				console.error('Failed to fetch balance:', error)
+			})
+	}
 
-    const handleAmountChange = e => {
-        setAmount(e.target.value);
-    };
+	const handleAmountChange = e => {
+		setAmount(e.target.value)
+	}
 
-    const handleSaveChanges = e => {
-        e.preventDefault();
-        if (parseFloat(amount) <= 0) {
-            alert('Please enter a valid amount greater than zero.');
-            return;
-        }
-        const depositRequest = {
-            userId: user.id,
-            amount: parseFloat(amount)
-        };
-        axios.post('/wallet/deposit', depositRequest)
-            .then(response => {
-                alert('Deposit successful!');
-                fetchBalance(); 
-                setAmount(''); 
-            })
-            .catch(error => {
-                console.error('Failed to deposit:', error);
-                alert('Deposit failed. Check console for details.');
-            });
-    };
-
+	const handleSaveChanges = e => {
+		e.preventDefault()
+		if (parseFloat(amount) <= 0) {
+			alert('Please enter a valid amount greater than zero.')
+			return
+		}
+		const depositRequest = {
+			amount: parseFloat(amount),
+		}
+		axios
+			.post(`/users/${user.id}/deposit`, depositRequest)
+			.then(response => {
+				alert('Deposit successful!')
+				fetchBalance()
+				setAmount('')
+			})
+			.catch(error => {
+				console.error('Failed to deposit:', error)
+				alert('Deposit failed. Check console for details.')
+			})
+	}
 
 	return (
 		<div className='walletContainer'>

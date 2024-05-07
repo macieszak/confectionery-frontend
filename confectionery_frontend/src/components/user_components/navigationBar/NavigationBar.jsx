@@ -14,7 +14,7 @@ const NavigationBar = ({ menu, setMenu }) => {
 	const fetchCartItemCount = async () => {
 		if (user) {
 			try {
-				const response = await axios.get(`/cart/count/${user.id}`)
+				const response = await axios.get(`/users/${user.id}/items-number`)
 				setCartItemCount(response.data)
 			} catch (error) {
 				console.error('Error fetching cart count:', error)
@@ -28,11 +28,9 @@ const NavigationBar = ({ menu, setMenu }) => {
 	useEffect(() => {
 		fetchCartItemCount()
 
-		
 		const handleCartUpdate = () => fetchCartItemCount()
 		window.addEventListener('updateCartCount', handleCartUpdate)
 
-		
 		return () => {
 			window.removeEventListener('updateCartCount', handleCartUpdate)
 		}
@@ -42,7 +40,7 @@ const NavigationBar = ({ menu, setMenu }) => {
 		const updateCartCount = () => {
 			if (user) {
 				axios
-					.get(`/cart/count/${user.id}`)
+					.get(`/users/${user.id}/items-number`)
 					.then(response => {
 						setCartItemCount(response.data)
 					})
@@ -53,10 +51,9 @@ const NavigationBar = ({ menu, setMenu }) => {
 			}
 		}
 
-	
 		window.addEventListener('cartUpdated', updateCartCount)
 		window.addEventListener('cartCleared', () => setCartItemCount(0))
-	
+
 		return () => {
 			window.removeEventListener('cartUpdated', updateCartCount)
 			window.removeEventListener('cartCleared', () => setCartItemCount(0))

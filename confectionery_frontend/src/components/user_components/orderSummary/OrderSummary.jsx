@@ -1,7 +1,6 @@
 import React from 'react'
 import './OrderSummary.css'
 
-
 const OrderSummary = ({ subtotal, delivery, total, onNextStep }) => {
 	return (
 		<div className='order-summary-container'>
@@ -19,7 +18,9 @@ const OrderSummary = ({ subtotal, delivery, total, onNextStep }) => {
 				<strong>Total</strong>
 				<strong>{total.toFixed(2)}</strong>
 			</div>
-			<button className='next-step-button' onClick={onNextStep}>Next step</button>
+			<button className='next-step-button' onClick={onNextStep}>
+				Next step
+			</button>
 		</div>
 	)
 }

@@ -14,7 +14,7 @@ const OrderHistory = () => {
 		if (user) {
 			setLoading(true)
 			axios
-				.get(`/orders/user/${user.id}`)
+				.get(`users/${user.id}/orders`)
 				.then(response => {
 					setOrders(response.data)
 					setLoading(false)

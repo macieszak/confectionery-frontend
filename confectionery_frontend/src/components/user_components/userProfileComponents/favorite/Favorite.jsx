@@ -10,24 +10,26 @@ const Favorite = () => {
 	const [visibleFavorites, setVisibleFavorites] = useState(6)
 
 	useEffect(() => {
-	    if (user) {
-	        axios.get(`/user/favorites/show/${user.id}`)
-	            .then(response => {
-	                setFavorites(response.data.map(favorite => ({
-						...favorite,
-						imageUrl: favorite.image.name
-					}) ));
-	            })
-	            .catch(error => {
-	                console.error('Failed to fetch favorites:', error);
-	            });
-	    }
-	}, [user]);
-
+		if (user) {
+			axios
+				.get(`/users/${user.id}/favorites`)
+				.then(response => {
+					setFavorites(
+						response.data.map(favorite => ({
+							...favorite,
+							imageUrl: favorite.image.name,
+						}))
+					)
+				})
+				.catch(error => {
+					console.error('Failed to fetch favorites:', error)
+				})
+		}
+	}, [user])
 
 	const removeFavorite = productId => {
 		axios
-			.delete(`/user/favorites/delete/${user.id}/product/${productId}`)
+			.delete(`/users/${user.id}/favorites/${productId}`)
 			.then(() => {
 				setFavorites(favorites.filter(favorite => favorite.id !== productId))
 			})

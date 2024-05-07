@@ -3,123 +3,128 @@ import '../CSS/Products.css'
 import ProductListItem from '../../components/user_components/productListItem/ProductListItem'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../configuration/axiosConfig'
-import { useAuth } from '../../context/AuthContext';
-
 
 const Products = () => {
 	const [products, setProducts] = useState([])
 	const [sortOption, setSortOption] = useState('default')
 	const [searchTerm, setSearchTerm] = useState('')
 	const [categoryFilter, setCategoryFilter] = useState('all')
-	const [priceRange, setPriceRange] = useState('all')
 	const [priceFilter, setPriceFilter] = useState('all')
-	
-	const navigate = useNavigate();
-	const { user } = useAuth();
 
+	const navigate = useNavigate()
+
+	const sortProductsAlphabetically = products => {
+		return products.sort((a, b) => a.name.localeCompare(b.name))
+	}
 
 	const fetchFilteredProducts = () => {
 		const params = {
 			category: categoryFilter !== 'all' ? categoryFilter : null,
-			minPrice: priceFilter === '0-15' ? 0 : (priceFilter === '15-50' ? 15 : null),
-			maxPrice: priceFilter === '0-15' ? 15 : (priceFilter === '15-50' ? 50 : null)
-		};
-	
-		axios.get(`http://localhost:8080/api/user/products/filter`, { params })
+			minPrice: priceFilter === '0-15' ? 0 : priceFilter === '15-50' ? 15 : null,
+			maxPrice: priceFilter === '0-15' ? 15 : priceFilter === '15-50' ? 50 : null,
+		}
+
+		axios
+			.get(`http://localhost:8080/api/products/filter`, { params })
 			.then(response => {
-				setProducts(response.data.map(product => ({
-					...product,
-					imageUrl: product.image.name
-				})));
+				setProducts(
+					response.data.map(product => ({
+						...product,
+						imageUrl: product.image.name,
+					}))
+				)
 			})
 			.catch(error => {
-				console.error('Error fetching filtered products', error);
-			});
-	};
+				console.error('Error fetching filtered products', error)
+			})
+	}
 
-	const handleSortChange = (e) => {
-		const sortValue = e.target.value;
-		setSortOption(sortValue);
-	
-		fetchSortedProducts(sortValue);
-	};
-	
-	const fetchSortedProducts = (sortOption) => {
-		axios.get(`http://localhost:8080/api/user/products/sorted`, {
-			params: { sort: sortOption }
-		})
-		.then(response => {
-			setProducts(response.data.map(product => ({
-				...product,
-				imageUrl: product.image.name  
-			})));
-		})
-		.catch(error => {
-			console.log('Error fetching sorted products', error);
-		});
-	};
+	const fetchSortedProducts = sortOption => {
+		axios
+			.get(`http://localhost:8080/api/products/sorted`, {
+				params: { sort: sortOption },
+			})
+			.then(response => {
+				setProducts(
+					response.data.map(product => ({
+						...product,
+						imageUrl: product.image.name,
+					}))
+				)
+			})
+			.catch(error => {
+				console.log('Error fetching sorted products', error)
+			})
+	}
 
-	const handleProductClick = (productId) => {
-	  navigate(`/product/${productId}`);
-	};
-	
+	const handleProductClick = productId => {
+		navigate(`/product/${productId}`)
+	}
+
 	useEffect(() => {
-        axios.get('http://localhost:8080/api/user/products/all')
-             .then(response => {
-                 setProducts(response.data.map(product => ({
-                     ...product,
-                     imageUrl: product.image.name  
-                 })));
-             })
-             .catch(error => console.log('Error fetching products', error));
-    }, []);
+		axios
+			.get('http://localhost:8080/api/products')
+			.then(response => {
+				setProducts(
+					response.data.map(product => ({
+						...product,
+						imageUrl: product.image.name,
+					}))
+				)
+			})
+			.catch(error => console.log('Error fetching products', error))
+	}, [])
 
 	const fetchAllProducts = () => {
-		axios.get('http://localhost:8080/api/user/products/all')
+		axios
+			.get('http://localhost:8080/api/products')
 			.then(response => {
-				setProducts(response.data.map(product => ({
-					...product,
-					imageUrl: product.image.name  
-				})));
+				const sortedProducts = sortProductsAlphabetically(
+					response.data.map(product => ({
+						...product,
+						imageUrl: product.image.name,
+					}))
+				)
+				setProducts(sortedProducts)
 			})
 			.catch(error => {
-				console.log('Error fetching all products', error);
-			});
-	};
-	
+				console.log('Error fetching all products', error)
+			})
+	}
 
 	useEffect(() => {
 		if (searchTerm) {
-			fetchProductsBySearch(searchTerm);
+			fetchProductsBySearch(searchTerm)
 		} else {
-			// Możesz zdecydować, czy chcesz wyświetlić wszystkie produkty, gdy nie ma wyszukiwania
-			fetchAllProducts();
+			fetchAllProducts()
 		}
-	}, [searchTerm]);
-	
-	const fetchProductsBySearch = (query) => {
-		axios.get(`http://localhost:8080/api/user/products/search`, {
-			params: { query }
-		})
-		.then(response => {
-			setProducts(response.data.map(product => ({
-				...product,
-				imageUrl: product.image.name  
-			})));
-		})
-		.catch(error => {
-			console.log('Error fetching products by search', error);
-		});
-	};
+	}, [searchTerm])
 
-
-	useEffect(() => {
-		fetchSortedProducts(sortOption);
-	}, [sortOption]);  // To gwarantuje, że każda zmiana opcji sortowania pobierze dane na nowo
+	const fetchProductsBySearch = query => {
+		axios
+			.get(`http://localhost:8080/api/products/search`, {
+				params: { query },
+			})
+			.then(response => {
+				setProducts(
+					response.data.map(product => ({
+						...product,
+						imageUrl: product.image.name,
+					}))
+				)
+			})
+			.catch(error => {
+				console.log('Error fetching products by search', error)
+			})
+	}
 
 	useEffect(() => {
-		fetchFilteredProducts();
-	}, [categoryFilter, priceFilter]);  // Zareaguj na zmianę filtrów
+		fetchSortedProducts(sortOption)
+	}, [sortOption])
+
+	useEffect(() => {
+		fetchFilteredProducts()
+	}, [categoryFilter, priceFilter])
 
 	return (
 		<div className='products-page'>
@@ -153,11 +158,10 @@ const Products = () => {
 							Cakes
 						</button>
 						<button
-							className={`filter-button ${categoryFilter === 's' ? 'active' : ''}`}
+							className={`filter-button ${categoryFilter === 'cookies' ? 'active' : ''}`}
 							onClick={() => setCategoryFilter('cookies')}>
 							Cookies
 						</button>
-						{/* Dodaj więcej kategorii z odpowiednią logiką */}
 					</div>
 				</div>
 				<div className='filter-price'>
@@ -178,7 +182,6 @@ const Products = () => {
 							onClick={() => setPriceFilter('15-50')}>
 							15zł-50zł
 						</button>
-						{/* Dodaj więcej opcji cenowych z odpowiednią logiką */}
 					</div>
 				</div>
 			</div>

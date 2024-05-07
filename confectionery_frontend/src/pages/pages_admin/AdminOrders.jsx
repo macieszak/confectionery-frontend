@@ -9,7 +9,7 @@ const AdminOrders = () => {
 
 	const changeOrderStatus = (orderId, newStatus) => {
 		axios
-			.post(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
+			.put(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
 			.then(response => {
 				const updatedOrders = orders.map(order => {
 					if (order.orderId === orderId) {
@@ -26,7 +26,7 @@ const AdminOrders = () => {
 
 	useEffect(() => {
 		axios
-			.get('/admin/orders/all')
+			.get('/admin/orders')
 			.then(response => {
 				setOrders(response.data)
 				setLoading(false)

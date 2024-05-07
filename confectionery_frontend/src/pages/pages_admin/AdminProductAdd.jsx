@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../../configuration/axiosConfig'
-import { useAuth } from '../../context/AuthContext'
 import '../CSS/AdminProductEdit.css'
 import { toast } from 'react-toastify'
 
 const AdminProductAdd = () => {
-	const { user } = useAuth()
 	const navigate = useNavigate()
 	const [product, setProduct] = useState({
 		name: '',
@@ -63,7 +61,7 @@ const AdminProductAdd = () => {
 		formData.append('image', product.image)
 
 		axios
-			.post('http://localhost:8080/api/admin/products/add', formData, {
+			.post('http://localhost:8080/api/admin/products', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},

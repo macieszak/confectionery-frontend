@@ -3,7 +3,6 @@ import axios from '../../configuration/axiosConfig'
 import OrderSummary from '../../components/user_components/orderSummary/OrderSummary'
 import CartItem from '../../components/user_components/cartItem/CartItem'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
 import '../CSS/Cart.css'
 import { AuthContext } from '../../context/AuthContext'
 
@@ -18,7 +17,7 @@ const Cart = ({}) => {
 	useEffect(() => {
 		if (user) {
 			axios
-				.get(`/cart/items/${user.id}`)
+				.get(`/users/${user.id}/items`)
 				.then(response => {
 					setCartItems(
 						response.data.map(item => ({
@@ -35,7 +34,7 @@ const Cart = ({}) => {
 
 	const fetchCartItems = () => {
 		axios
-			.get(`/cart/items/${user.id}`)
+			.get(`/users/${user.id}/items`)
 			.then(response => {
 				setCartItems(
 					response.data.map(item => ({
@@ -53,10 +52,10 @@ const Cart = ({}) => {
 
 	const incrementQuantity = cartItemId => {
 		axios
-			.post(`/cart/increment/${user.id}/${cartItemId}`)
+			.post(`/users/${user.id}/products/${cartItemId}/increment`)
 			.then(() => {
 				fetchCartItems()
-				window.dispatchEvent(new CustomEvent('cartUpdated'));
+				window.dispatchEvent(new CustomEvent('cartUpdated'))
 			})
 			.catch(error => {
 				console.error('Failed to increment quantity:', error)
@@ -65,10 +64,10 @@ const Cart = ({}) => {
 
 	const decrementQuantity = cartItemId => {
 		axios
-			.post(`/cart/decrement/${user.id}/${cartItemId}`)
+			.post(`/users/${user.id}/products/${cartItemId}/decrement`)
 			.then(() => {
 				fetchCartItems()
-				window.dispatchEvent(new CustomEvent('cartUpdated'));
+				window.dispatchEvent(new CustomEvent('cartUpdated'))
 			})
 			.catch(error => {
 				console.error('Failed to decrement quantity:', error)
@@ -77,18 +76,14 @@ const Cart = ({}) => {
 
 	const removeItem = cartItemId => {
 		axios
-			.delete(`/cart/remove/${user.id}/${cartItemId}`)
+			.delete(`/users/${user.id}/products/${cartItemId}`)
 			.then(() => {
 				fetchCartItems()
-				window.dispatchEvent(new CustomEvent('cartUpdated'));
+				window.dispatchEvent(new CustomEvent('cartUpdated'))
 			})
 			.catch(error => {
 				console.error('Failed to remove item from cart:', error)
 			})
-	}
-
-	const showMoreItems = () => {
-		setVisibleItems(prevVisible => prevVisible + 5)
 	}
 
 	const toggleShowMore = () => {
@@ -104,18 +99,17 @@ const Cart = ({}) => {
 		navigate('/delivery')
 	}
 
-
 	useEffect(() => {
 		const handleCartUpdate = () => {
-		  setCartItems([]);  // Clear the cart items or fetch new ones if needed
-		};
-	  
-		window.addEventListener('cartCleared', handleCartUpdate);
-	  
+			setCartItems([])
+		}
+
+		window.addEventListener('cartCleared', handleCartUpdate)
+
 		return () => {
-		  window.removeEventListener('cartCleared', handleCartUpdate);
-		};
-	  }, []);
+			window.removeEventListener('cartCleared', handleCartUpdate)
+		}
+	}, [])
 
 	return (
 		<div className='cart-container'>

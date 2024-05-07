@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from '../../configuration/axiosConfig' // Adjust the import path as necessary
+import axios from '../../configuration/axiosConfig'
 import { useNavigate } from 'react-router-dom'
 import '../CSS/AdminUsers.css'
 
@@ -8,15 +8,13 @@ const AdminUsers = () => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		// Fetch users when the component is mounted
 		axios
-			.get('/admin/users/all')
+			.get('/admin/users') 
 			.then(response => {
-				setUsers(response.data) // Set users state with the fetched data
+				setUsers(response.data)
 			})
 			.catch(error => {
 				console.error('Error fetching users:', error)
-				// Handle errors here, e.g., unauthorized access, server issues, etc.
 			})
 	}, [])
 

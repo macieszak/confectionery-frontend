@@ -27,7 +27,6 @@
 	background-color: #eee;
 }
 
-/* Style dla formularza dodawania nowego adresu */
 .select-address-container input {
 	width: 100%;
 	padding: 0.5em;
@@ -35,7 +34,7 @@
 	border: 1px solid #ddd;
 	border-radius: 4px;
 	box-sizing: border-box;
-	text-align: center; /* Wyśrodkowanie placeholdera i tekstu */
+	text-align: center;
 	font-size: 18px;
 }
 

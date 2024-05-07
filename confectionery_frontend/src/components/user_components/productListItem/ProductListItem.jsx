@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import './ProductListItem.css'
 import { useAuth } from '../../../context/AuthContext'
 import axios from '../../../configuration/axiosConfig'
@@ -12,7 +11,7 @@ const ProductListItem = ({ id, name, price, category, onClick, imageUrl }) => {
 	useEffect(() => {
 		const fetchImage = async () => {
 			try {
-				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/user/products/img/${imageUrl}`
+				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/products/img/${imageUrl}`
 				const response = await axios.get(imagePath, { responseType: 'blob' })
 				const imageBlob = response.data
 				const reader = new FileReader()
@@ -23,7 +22,7 @@ const ProductListItem = ({ id, name, price, category, onClick, imageUrl }) => {
 				}
 			} catch (error) {
 				console.error('Failed to load image:', error)
-				setImageSrc('') 
+				setImageSrc('')
 			}
 		}
 		fetchImage()

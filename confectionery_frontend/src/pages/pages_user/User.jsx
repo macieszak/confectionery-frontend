@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
-import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import '../CSS/User.css'
 
 const User = () => {

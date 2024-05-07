@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react'
 import axios from '../../../configuration/axiosConfig'
 import './SummaryCartItem.css'
 
-const SummaryCartItem = ({productName, imageUrl, quantity, price}) => {
-
+const SummaryCartItem = ({ productName, imageUrl, quantity, price }) => {
 	const [imageSrc, setImageSrc] = useState('')
 
 	useEffect(() => {
 		const fetchImage = async () => {
 			try {
-				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/user/products/img/${imageUrl}`
+				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/products/img/${imageUrl}`
 				const response = await axios.get(imagePath, { responseType: 'blob' })
 				const imageBlob = response.data
 				const reader = new FileReader()

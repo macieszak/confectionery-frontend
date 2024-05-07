@@ -1,42 +1,42 @@
 .footer {
-    background-color: #5E3A13;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
-    box-sizing: border-box;
+	background-color: #5e3a13;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 100%;
+	box-sizing: border-box;
 }
 
-.footer-logo img{
-    width: 100px;
+.footer-logo img {
+	width: 100px;
 }
 
 .footer-opening-hours {
-    text-align: center;
+	text-align: center;
 }
 
 .footer-opening-hours h1 {
-    color: #EEDDCC;
-    font-size: large;
+	color: #eeddcc;
+	font-size: large;
 }
 
 .footer-opening-hours p {
-    color: #EEDDCC;
-    font-size: large;
+	color: #eeddcc;
+	font-size: large;
 }
 
 .footer-social-media {
-    display: flex;
+	display: flex;
 }
 
 .footer-social-media div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px; /* Dostosuj według potrzeb */
-    height: 40px; /* Dostosuj według potrzeb */
-    border-radius: 50%;
-    color: #EEDDCC; /* Kolor ikon */
-    background-color: #5E3A13; /* Tło ikon, dostosuj kolor */
-  }
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	color: #eeddcc;
+	background-color: #5e3a13;
+}

@@ -57,15 +57,13 @@
 	font-size: 1rem;
 }
 
-
-/* Nowy styl dla kontenera checkboxa */
 .loginsignup-container .admin-checkbox-container {
-    margin: 20px 0;
-    display: flex;
-    justify-content: center; /* Wyśrodkowanie poziome */
-    align-items: center; /* Wyśrodkowanie pionowe */
+	margin: 20px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .loginsignup-container .admin-checkbox-container input[type='checkbox'] {
-    margin-right: 10px;
+	margin-right: 10px;
 }

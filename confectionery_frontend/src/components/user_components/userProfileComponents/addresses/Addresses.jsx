@@ -1,102 +1,9 @@
-// import React, { useState } from 'react'
-// import { FaEdit, FaSave } from 'react-icons/fa'
-// import { MdDelete } from 'react-icons/md'
-// import './Addresses.css'
-
-// const Addresses = () => {
-// 	const [adresy, setAdresy] = useState([
-// 		'Adres 1',
-// 		'Adres 2',
-// 		'Adres 3',
-// 		// ...dodatkowe adresy
-// 	])
-
-// 	const [editIndex, setEditIndex] = useState(-1) // Indeks edytowanego adresu, -1 oznacza, że żaden nie jest edytowany
-// 	const [editedAddress, setEditedAddress] = useState('') // Stan dla przechowywania edytowanego adresu
-// 	const [newAddress, setNewAddress] = useState('') // Stan dla przechowywania nowego adresu
-
-// 	const handleEdit = index => {
-// 		setEditIndex(index)
-// 		setEditedAddress(adresy[index])
-// 	}
-
-// 	const handleSave = index => {
-// 		const updatedAdresy = [...adresy]
-// 		updatedAdresy[index] = editedAddress
-// 		setAdresy(updatedAdresy)
-// 		setEditIndex(-1)
-// 	}
-
-// 	const handleDelete = index => {
-// 		const updatedAdresy = adresy.filter((_, i) => i !== index)
-// 		setAdresy(updatedAdresy)
-// 	}
-
-// 	const handleAddNewAddress = () => {
-// 		if (newAddress) {
-// 			setAdresy(adresy.concat(newAddress))
-// 			setNewAddress('')
-// 		}
-// 	}
-
-// 	const handleNewAddressChange = e => {
-// 		setNewAddress(e.target.value)
-// 	}
-
-// 	const handleEditedAddressChange = e => {
-// 		setEditedAddress(e.target.value)
-// 	}
-
-// 	return (
-// 		<div className='addressesContainer'>
-// 			<h2>Delivery details</h2>
-// 			{adresy.map((adres, index) => (
-// 				<div className='addressItem' key={index}>
-// 					{editIndex === index ? (
-// 						<input type='text' value={editedAddress} onChange={handleEditedAddressChange} className='editInput' />
-// 					) : (
-// 						<span>{adres}</span>
-// 					)}
-// 					<div className='addressActions'>
-// 						{editIndex === index ? (
-// 							<button onClick={() => handleSave(index)} className='actionButton'>
-// 								<FaSave />
-// 							</button>
-// 						) : (
-// 							<button onClick={() => handleEdit(index)} className='actionButton'>
-// 								<FaEdit />
-// 							</button>
-// 						)}
-// 						<button onClick={() => handleDelete(index)} className='actionButton'>
-// 							<MdDelete />
-// 						</button>
-// 					</div>
-// 				</div>
-// 			))}
-// 			<div className='newAddressContainer'>
-// 				<input
-// 					type='text'
-// 					value={newAddress}
-// 					onChange={handleNewAddressChange}
-// 					className='newAddressInput'
-// 					placeholder='Enter new address'
-// 				/>
-// 				<button onClick={handleAddNewAddress} className='addAddressButton'>
-// 					Add new address
-// 				</button>
-// 			</div>
-// 		</div>
-// 	)
-// }
-
-// export default Addresses
-
 import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from '../../../../context/AuthContext'
-import axios from '../../../../configuration/axiosConfig'
 import { FaEdit, FaSave } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 import { toast } from 'react-toastify'
+import axios from '../../../../configuration/axiosConfig'
 import './Addresses.css'
 
 const Addresses = () => {
@@ -109,7 +16,7 @@ const Addresses = () => {
 	useEffect(() => {
 		if (user?.id) {
 			axios
-				.get(`addresses/user/${user.id}`)
+				.get(`users/${user.id}/addresses`)
 				.then(response => {
 					console.log('Loaded addresses:', response.data)
 					setAddresses(response.data)
@@ -140,11 +47,10 @@ const Addresses = () => {
 
 		const updatedAddress = {
 			address: editedAddress,
-			userId: user.id,
 		}
 
 		axios
-			.put(`/addresses/update/${addresses[index].id}`, updatedAddress)
+			.put(`/users/${user.id}/addresses/${addresses[index].id}`, updatedAddress)
 			.then(response => {
 				const updatedAddresses = [...addresses]
 				updatedAddresses[index] = response.data
@@ -160,7 +66,7 @@ const Addresses = () => {
 
 	const handleDelete = index => {
 		axios
-			.delete(`/addresses/delete/${addresses[index].id}`)
+			.delete(`/users/${user.id}/addresses/${addresses[index].id}`)
 			.then(() => {
 				const updatedAddresses = addresses.filter((_, i) => i !== index)
 				setAddresses(updatedAddresses)
@@ -176,7 +82,6 @@ const Addresses = () => {
 		if (newAddress.trim()) {
 			const addressData = {
 				address: newAddress,
-				userId: user.id,
 			}
 
 			if (!newAddress.trim()) {
@@ -185,15 +90,18 @@ const Addresses = () => {
 			}
 
 			axios
-				.post('/addresses/add', addressData)
+				.post(`/users/${user.id}/addresses`, addressData)
 				.then(response => {
 					setAddresses([...addresses, response.data])
 					setNewAddress('')
 					toast.success('New address added successfully!')
 				})
 				.catch(error => {
-					console.error('Failed to add address:', error)
-					toast.error('Failed to add new address')
+					if (error.response && error.response.status === 409) {
+						toast.error('You already have such an address.')
+					} else {
+						toast.error('Failed to add new address')
+					}
 				})
 		}
 	}

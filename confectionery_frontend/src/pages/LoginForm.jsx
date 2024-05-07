@@ -34,9 +34,9 @@ const LoginForm = () => {
 		axios
 			.post('auth/authenticate', formData)
 			.then(response => {
-				const { access_token, id ,firstName, lastName, email, role, phoneNumber } = response.data
+				const { access_token, id, firstName, lastName, email, role, phoneNumber } = response.data
 				localStorage.setItem('access_token', access_token)
-				login({ access_token, id ,email, role, firstName, lastName, phoneNumber})
+				login({ access_token, id, email, role, firstName, lastName, phoneNumber })
 				toast.success('Login successful! Welcome back!')
 				navigate('/')
 				setLoading(false)
@@ -44,11 +44,9 @@ const LoginForm = () => {
 			.catch(error => {
 				if (error.response && error.response.status === 401) {
 					toast.error('Invalid email or password. Please try again.')
-				}
-				else if (error.response && error.response.status === 400) {
+				} else if (error.response && error.response.status === 400) {
 					toast.error('Account is inactive. Please contact support.')
-				}
-				else {
+				} else {
 					toast.error('Login failed: ' + (error.response?.data?.error || error.message))
 				}
 				setLoading(false)

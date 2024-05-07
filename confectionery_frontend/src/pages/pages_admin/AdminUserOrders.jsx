@@ -9,7 +9,7 @@ const AdminUserOrders = () => {
 
 	const changeOrderStatus = (orderId, newStatus) => {
 		axios
-			.post(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
+			.put(`/admin/orders/${orderId}/status`, { newStatus: newStatus })
 			.then(response => {
 				const updatedOrders = orders.map(order => {
 					if (order.orderId === orderId) {
@@ -42,7 +42,6 @@ const AdminUserOrders = () => {
 				<thead>
 					<tr>
 						<th>Order ID</th>
-						{/* <th>User Name</th> */}
 						<th>Date</th>
 						<th>Total</th>
 						<th className='status-column'>Status</th>

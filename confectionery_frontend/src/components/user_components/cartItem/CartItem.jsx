@@ -18,7 +18,7 @@ const CartItem = ({
 	useEffect(() => {
 		const fetchImage = async () => {
 			try {
-				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/user/products/img/${imageUrl}`
+				const imagePath = imageUrl.startsWith('http') ? imageUrl : `/products/img/${imageUrl}`
 				const response = await axios.get(imagePath, { responseType: 'blob' })
 				const imageBlob = response.data
 				const reader = new FileReader()

@@ -24,7 +24,7 @@ const SummaryPage = () => {
 	const fetchCartItems = () => {
 		if (user) {
 			axios
-				.get(`/cart/items/${user.id}`)
+				.get(`/users/${user.id}/items`)
 				.then(response => {
 					setCartItems(
 						response.data.map(item => ({
@@ -44,22 +44,21 @@ const SummaryPage = () => {
 
 	const confirmOrder = () => {
 		if (cartItems.length === 0) {
-			toast.error('Your cart is empty. Add some products before placing an order.');
-			return; // Przerywa dalsze wykonywanie funkcji
+			toast.error('Your cart is empty. Add some products before placing an order.')
+			return
 		}
 
-		if (isOrdering) return // Blokada przed kolejnymi wywołaniami
+		if (isOrdering) return
 		setIsOrdering(true)
 		setLoading(true)
 
 		const orderRequest = {
-			userId: user.id,
 			addressId: selectedAddress.id,
 			cartItemIds: cartItems.map(item => item.cartItemId),
 		}
 
 		axios
-			.post('/orders/create', orderRequest)
+			.post(`users/${user.id}/orders`, orderRequest)
 			.then(response => {
 				navigate('/user/order-history')
 				toast.success('Order placed successfully!')

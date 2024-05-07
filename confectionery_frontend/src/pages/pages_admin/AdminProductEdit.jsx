@@ -42,7 +42,7 @@ const AdminProductEdit = () => {
 
 	const fetchImage = async imageName => {
 		try {
-			const response = await axios.get(`/user/products/img/${imageName}`, { responseType: 'blob' })
+			const response = await axios.get(`/products/img/${imageName}`, { responseType: 'blob' })
 			const imageBlob = response.data
 			const reader = new FileReader()
 			reader.readAsDataURL(imageBlob)
@@ -82,7 +82,7 @@ const AdminProductEdit = () => {
 		}
 
 		try {
-			await axios.put(`/admin/products/edit/${productId}`, formData, {
+			await axios.put(`/admin/products/${productId}`, formData, {
 				headers: { 'Content-Type': 'multipart/form-data' },
 			})
 			alert('Product details updated successfully!')
@@ -127,7 +127,7 @@ const AdminProductEdit = () => {
 	const deleteProduct = async () => {
 		if (window.confirm('Are you sure you want to delete this product?')) {
 			try {
-				await axios.delete(`/admin/products/delete/${productId}`)
+				await axios.delete(`/admin/products/${productId}`)
 				alert('Product deleted successfully!')
 				navigate('/admin/products')
 			} catch (error) {

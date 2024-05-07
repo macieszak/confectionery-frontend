@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import axios from '../../../configuration/axiosConfig'
 import { AuthContext } from '../../../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import axios from '../../../configuration/axiosConfig'
 import './SelectAddress.css'
 
 const SelectAddress = () => {
@@ -14,7 +14,7 @@ const SelectAddress = () => {
 	useEffect(() => {
 		if (user) {
 			axios
-				.get(`/addresses/user/${user.id}`)
+				.get(`/users/${user.id}/addresses`)
 				.then(response => {
 					setAddresses(response.data)
 				})
@@ -24,12 +24,10 @@ const SelectAddress = () => {
 		}
 	}, [user])
 
-
 	const handleAddNewAddress = () => {
 		if (newAddress.trim()) {
 			const addressData = {
 				address: newAddress,
-				userId: user.id,
 			}
 
 			if (!newAddress.trim()) {
@@ -37,17 +35,20 @@ const SelectAddress = () => {
 				return
 			}
 
-			if (newAddress) {
-				axios
-					.post('/addresses/add', addressData)
-					.then(response => {
-						setAddresses([...addresses, response.data])
-						setNewAddress('')
-					})
-					.catch(error => {
-						console.error('Failed to add new address:', error)
-					})
-			}
+			axios
+				.post(`/users/${user.id}/addresses`, addressData)
+				.then(response => {
+					setAddresses([...addresses, response.data])
+					setNewAddress('')
+					toast.success('New address added successfully!')
+				})
+				.catch(error => {
+					if (error.response && error.response.status === 409) {
+						toast.error('You already have such an address.')
+					} else {
+						toast.error('Failed to add new address')
+					}
+				})
 		}
 	}
 

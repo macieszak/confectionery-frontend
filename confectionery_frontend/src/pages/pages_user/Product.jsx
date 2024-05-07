@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import axios from '../../configuration/axiosConfig'
 import { FaHeart } from 'react-icons/fa'
-import { AuthContext, useAuth } from '../../context/AuthContext'
+import { AuthContext } from '../../context/AuthContext'
 import '../CSS/Product.css'
 import { toast } from 'react-toastify'
 
 const Product = ({ fetchCartItemCount }) => {
-	const navigate = useNavigate()
 	const { productId } = useParams()
 	const { user } = useContext(AuthContext)
 	const [product, setProduct] = useState({
@@ -26,7 +25,7 @@ const Product = ({ fetchCartItemCount }) => {
 		setIsLoading(true)
 		const fetchProduct = async () => {
 			try {
-				const { data } = await axios.get(`/user/products/${productId}`)
+				const { data } = await axios.get(`/products/${productId}`)
 				setProduct({
 					id: data.id,
 					name: data.name,
@@ -48,7 +47,7 @@ const Product = ({ fetchCartItemCount }) => {
 
 	const fetchImage = async imageName => {
 		try {
-			const response = await axios.get(`/user/products/img/${imageName}`, { responseType: 'blob' })
+			const response = await axios.get(`/products/img/${imageName}`, { responseType: 'blob' })
 			const imageBlob = response.data
 			const reader = new FileReader()
 			reader.readAsDataURL(imageBlob)
@@ -68,13 +67,12 @@ const Product = ({ fetchCartItemCount }) => {
 		}
 
 		const payload = new URLSearchParams()
-		payload.append('userId', user.id)
 		payload.append('favoriteProductId', product.id)
 
 		try {
-			const response = await axios.post('/user/favorites/add', payload, {
+			const response = await axios.post(`/users/${user.id}/favorites`, payload, {
 				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded', //to pomogło
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
 			})
 			if (response.status === 200) {
@@ -95,10 +93,10 @@ const Product = ({ fetchCartItemCount }) => {
 		}
 
 		try {
-			const response = await axios.post(`cart/add/${user.id}/${product.id}/${quantity}`)
+			const response = await axios.post(`users/${user.id}/products/${product.id}/${quantity}`)
 			if (response.status === 200) {
 				toast.success('Product added to cart successfully!')
-				window.dispatchEvent(new CustomEvent('updateCartCount'));
+				window.dispatchEvent(new CustomEvent('updateCartCount'))
 			} else {
 				alert('Failed to add product to cart: ' + response.statusText)
 			}

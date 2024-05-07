@@ -40,8 +40,6 @@ function App() {
 	const { user } = useAuth()
 	console.log(user)
 
-	
-
 	return (
 		<div className='main'>
 			<BrowserRouter>
@@ -79,7 +77,7 @@ function App() {
 								<Route path='/aboutus' element={<AboutUs />} />
 								<Route path='/products' element={<Products />} />
 								<Route path='/contacts' element={<Contact />} />
-								<Route path='/product/:productId' element={<Product/>} />
+								<Route path='/product/:productId' element={<Product />} />
 								<Route path='/cart' element={<Cart />} />
 								<Route path='/delivery' element={<DeliveryPage />} />
 								<Route path='/summary' element={<SummaryPage />} />

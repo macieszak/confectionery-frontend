@@ -1,71 +1,68 @@
 .summary-page-container {
-  display: flex;
+	display: flex;
 	padding: 20px;
 	gap: 20px;
 }
 
 .summary-cart-items-list {
-  flex: 1;
+	flex: 1;
 	margin-bottom: 20px;
 }
 
 .summary-cart-items-list h2 {
-  color: #333;
+	color: #333;
 	margin-bottom: 20px;
 }
 
 .summary-order-summary {
-  flex: 1;
+	flex: 1;
 	max-width: 700px;
 }
 
 .selected-address {
-  margin-top: 20px;
-  background-color: #f9f0e6;
+	margin-top: 20px;
+	background-color: #f9f0e6;
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
-  text-align: center;
+	text-align: center;
 }
 
 .selected-address h2 {
-  color: #333;
+	color: #333;
 	margin-bottom: 20px;
 }
 
-
-
 .selected-address {
-  margin-top: 20px;
-  background-color: #f9f0e6;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Dodać, aby wyśrodkować dzieci względem osi pionowej */
-  text-align: center; /* Dodać, aby wyśrodkować tekst wewnątrz */
-  padding: 20px; /* Dodać padding, aby nadać trochę przestrzeni wewnątrz */
+	margin-top: 20px;
+	background-color: #f9f0e6;
+	border-radius: 5px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 20px;
 }
 
 .selected-address h2,
 .selected-address p {
-  width: 100%; /* Upewnij się, że elementy rozciągają się na całą szerokość */
+	width: 100%;
 }
 
-/* Styl dla przycisku, jeśli potrzebny */
 .checkout-button {
-  padding: 10px 20px;
-  margin-top: 20px; /* Dodaj trochę przestrzeni nad przyciskiem */
-  width: 100%; /* Upewnij się, że przycisk rozciąga się na całą szerokość */
-  border: none;
-  background-color: #d9a571;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: medium;
+	padding: 10px 20px;
+	margin-top: 20px;
+	width: 100%;
+	border: none;
+	background-color: #d9a571;
+	color: white;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: medium;
 }
 
 .checkout-button:hover {
-  background-color: #c98a5f;
+	background-color: #c98a5f;
 }
